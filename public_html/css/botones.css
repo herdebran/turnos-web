@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 08/08/2018, 20:10:45
+    Author     : lautaro
+*/
+
+.icono-rojo{
+    color: red;
+}
+
+.icono-info{
+    color: #5bc0de;
+}
+
+.icono-danger{
+    color: #d9534f;
+}
+
+.icono-success{
+    color: #5cb85c;
+}
+
+.icono-warning{
+    color: #f0ad4e;
+}

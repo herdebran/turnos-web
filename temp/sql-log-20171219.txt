@@ -1,0 +1,358 @@
+2017.12.18 21.01.42 [Cooperadora/getCooperadoraPersonaDatos/1066]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2017.12.18 21.01.42 [Cooperadora/getCooperadoraCuotasAño/2017/1066]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2017.12.18 21.01.42 [Cooperadora/getOperacionesPersona/1066] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2017.12.18 21.01.42 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2017.12.18 21.01.42 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2017.12.18 21.01.42 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.02.34 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.02.34 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.02.34 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.02.34 [Persona/getPersonasCooperadora/%aca%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.apellido like :apellido and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.02.48 [Persona/getPersonasCooperadora/%aca%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.apellido like :apellido and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.08.36 [Persona/getPersonasCooperadora/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.09.02 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.09.02 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.09.02 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.09.02 [Persona/getPersonasCooperadora/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.09.38 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.09.38 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.09.38 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.09.38 [Persona/getPersonasCooperadora/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.10.04 [Persona/getPersonasCooperadora/%aca%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.apellido like :apellido and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.10.24 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.10.38 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.10.38 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.10.38 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.10.39 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.11.42 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.11.42 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.11.42 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.11.56 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.11.56 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.11.56 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.12.06 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.12.11 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.12.11 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.12.11 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.12.12 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.12.16 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.12.21 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.18 21.12.43 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.18 21.12.43 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.18 21.12.43 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.18 21.12.43 [Persona/getPersonasCooperadora/%lautaro%/1] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.nombre like :nombre and t.id=:tipdoc order by apellido, p.nombre
+2017.12.19 16.09.35 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuarios u inner join personas p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2017.12.19 16.09.35 [seguridad/login] SELECT p.idpersona, p.legajo, p.apellido, p.nombre, p.estado, u.usuario,  u.email, u.estado, u.primeracceso FROM personas p inner join usuarios u on p.idpersona=u.idpersona where p.idpersona=4826
+2017.12.19 16.09.35 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 order by 1
+2017.12.19 16.09.35 [seguridad/login] insert into usuarioaccesos (idpersona,fecha) select 4826,CURRENT_TIMESTAMP
+2017.12.19 16.09.35 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 16.09.35 [seguridad/pickrole] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 16.09.36 [seguridad/pickrole] select pr.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 and pr.idrol=3
+2017.12.19 16.09.36 [seguridad/pickrole] select p.idpermiso,p.nombre as nombre from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso where pr.idRol=3 union all select p.idpermiso,pe.nombre as nombre from personapermisos p inner join permisos pe on p.idpermiso=pe.idpermiso where p.idpersona= 4826 order by nombre 
+2017.12.19 16.09.37 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.19 16.13.07 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.19 16.13.18 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.19 16.13.23 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuarios u inner join personas p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2017.12.19 16.13.23 [seguridad/login] SELECT p.idpersona, p.legajo, p.apellido, p.nombre, p.estado, u.usuario,  u.email, u.estado, u.primeracceso FROM personas p inner join usuarios u on p.idpersona=u.idpersona where p.idpersona=4826
+2017.12.19 16.13.23 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 order by 1
+2017.12.19 16.13.23 [seguridad/login] insert into usuarioaccesos (idpersona,fecha) select 4826,CURRENT_TIMESTAMP
+2017.12.19 16.13.23 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 16.13.23 [seguridad/pickrole] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 16.13.24 [seguridad/pickrole] select pr.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 and pr.idrol=3
+2017.12.19 16.13.24 [seguridad/pickrole] select p.idpermiso,p.nombre as nombre from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso where pr.idRol=3 union all select p.idpermiso,pe.nombre as nombre from personapermisos p inner join permisos pe on p.idpermiso=pe.idpermiso where p.idpersona= 4826 order by nombre 
+2017.12.19 16.13.24 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.19 16.15.34 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2017.12.19 16.15.34 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2017.12.19 16.15.34 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2017.12.19 17.07.42 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuarios u inner join personas p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2017.12.19 17.07.42 [seguridad/login] SELECT p.idpersona, p.legajo, p.apellido, p.nombre, p.estado, u.usuario,  u.email, u.estado, u.primeracceso FROM personas p inner join usuarios u on p.idpersona=u.idpersona where p.idpersona=4826
+2017.12.19 17.07.42 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 order by 1
+2017.12.19 17.07.42 [seguridad/login] insert into usuarioaccesos (idpersona,fecha) select 4826,CURRENT_TIMESTAMP
+2017.12.19 17.07.42 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 17.07.42 [seguridad/pickrole] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826
+2017.12.19 17.07.43 [seguridad/pickrole] select pr.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4826 and pr.idrol=3
+2017.12.19 17.07.43 [seguridad/pickrole] select p.idpermiso,p.nombre as nombre from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso where pr.idRol=3 union all select p.idpermiso,pe.nombre as nombre from personapermisos p inner join permisos pe on p.idpermiso=pe.idpermiso where p.idpersona= 4826 order by nombre 
+2017.12.19 17.07.44 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4826 left join alumnos a on a.idpersona=4826 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc

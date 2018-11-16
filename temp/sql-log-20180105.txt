@@ -1,0 +1,1488 @@
+2018.01.05 17.22.03 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuarios u inner join personas p on p.idpersona=u.idpersona where u.usuario='16557923' AND u.estado=1 AND p.estado=1
+2018.01.05 17.22.03 [seguridad/login] SELECT p.idpersona, p.legajo, p.apellido, p.nombre, p.estado, u.usuario,  u.email, u.estado, u.primeracceso FROM personas p inner join usuarios u on p.idpersona=u.idpersona where p.idpersona=4812
+2018.01.05 17.22.03 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4812 order by 1
+2018.01.05 17.22.03 [seguridad/login] insert into usuarioaccesos (idpersona,fecha) select 4812,CURRENT_TIMESTAMP
+2018.01.05 17.22.03 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4812
+2018.01.05 17.22.03 [seguridad/pickrole] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4812
+2018.01.05 17.22.05 [seguridad/pickrole] select pr.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=4812 and pr.idrol=3
+2018.01.05 17.22.05 [seguridad/pickrole] select p.idpermiso,p.nombre as nombre from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso where pr.idRol=3 union all select p.idpermiso,pe.nombre as nombre from personapermisos p inner join permisos pe on p.idpermiso=pe.idpermiso where p.idpersona= 4812 order by nombre 
+2018.01.05 17.22.05 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.10 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.22.10 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.22.10 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.22.10 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.22.10 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.22.10 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.22.10 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.10 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.22.10 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.22.10 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.22.10 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.22.10 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.22.10 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.22.10 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.10 [Persona/getPersonasCooperadora] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 order by apellido, p.nombre
+2018.01.05 17.22.17 [Persona/getPersonasCooperadora/%aca%] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.apellido like :apellido order by apellido, p.nombre
+2018.01.05 17.22.20 [Cooperadora/getCooperadoraPersonaDatos/1066]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2018.01.05 17.22.20 [Cooperadora/getCooperadoraCuotasAño/2018/1066]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2018.01.05 17.22.20 [Cooperadora/getOperacionesPersona/1066] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2018.01.05 17.22.20 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2018.01.05 17.22.20 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.22.20 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.24 [Cooperadora/elimianroepracion/70]  update operaciones set anulada = 1 where idoperacion = :idoperacion
+2018.01.05 17.22.24 [Cooperadora/getCooperadoraPersonaDatos/1066]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2018.01.05 17.22.24 [Cooperadora/getCooperadoraCuotasAño/2018/1066]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2018.01.05 17.22.24 [Cooperadora/getOperacionesPersona/1066] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2018.01.05 17.22.24 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2018.01.05 17.22.24 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.22.24 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.28 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.22.28 [cooperadora/nuevaOperacion] BEGIN
+2018.01.05 17.22.28 [Cooperadora/nuevaOperacion/2018-01-05 17:22:28/1066/50/16557923/2018-01-05 17:22:28] insert into operaciones (fecha, idpersona, montototal, anulada, usucrea, fechacrea)
+                values(:fecha, :idpersona, :montototal, 0, :usucrea, :fechacrea)
+2018.01.05 17.22.28 [Cooperadora/nuevaOperacion/75/10/01/2018/50] insert into operaciondetalle (idoperacion, idcuota, cuota, monto)
+                VALUES(:idoperacion, :idcuota, :cuota, :monto) 
+2018.01.05 17.22.28 [Cooperadora/nuevaOperacion] COMMIT
+2018.01.05 17.22.28 [Cooperadora/getCooperadoraPersonaDatos/1066]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2018.01.05 17.22.28 [Cooperadora/getCooperadoraCuotasAño/2018/1066]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2018.01.05 17.22.28 [Cooperadora/getOperacionesPersona/1066] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2018.01.05 17.22.28 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2018.01.05 17.22.28 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.22.28 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.22.54 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.22.54 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.23.36 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.23.36 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.23.58 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.23.58 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.24.15 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.24.15 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.24.28 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.24.28 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.21 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.21 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.35 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.35 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.40 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.40 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.45 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.45 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.52 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.52 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.25.58 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.25.58 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.26.42 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.26.42 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.27.24 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.27.24 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.27.40 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.27.40 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.27.54 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.27.54 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.28.13 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.28.13 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.28.25 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.28.25 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.28.34 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.28.34 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.28.40 [Persona/getPersonaById/1066] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.28.40 [Cooperadora/getOperacionesPersona/75] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.29.00 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.29.00 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.29.00 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.29.00 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.29.00 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.29.00 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.29.00 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.29.01 [Persona/getPersonasCooperadora/%aca%] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 and p.apellido like :apellido order by apellido, p.nombre
+2018.01.05 17.29.07 [Persona/getPersonasCooperadora] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 order by apellido, p.nombre
+2018.01.05 17.29.11 [Cooperadora/getCooperadoraPersonaDatos/7272]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2018.01.05 17.29.11 [Cooperadora/getCooperadoraCuotasAño/2018/7272]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2018.01.05 17.29.11 [Cooperadora/getOperacionesPersona/7272] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2018.01.05 17.29.11 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2018.01.05 17.29.11 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.29.11 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.29.13 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.29.13 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.01 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.01 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.34 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.34 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.41 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.41 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.48 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.48 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.54 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.54 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.30.58 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.30.58 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.31.02 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.31.02 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.31.12 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.31.12 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.31.34 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.31.34 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.31.38 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.31.38 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.31.54 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.31.54 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.32.10 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.32.10 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.32.22 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.32.22 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.34.38 [Cooperadora/getCooperadoraPersonaDatos/7272]  select p.apellido, p.nombre, concat(td.descripcion, ' ', p.documentonro) as documento, cp.idestado,  ce.descripcion as estadocooperadora  from personas p left join cooperadorapersona cp on p.idpersona = cp.idpersona  inner join tipodoc td on p.tipodoc = td.id  left join cooperadoraestados ce on cp.idestado = ce.id where p.idpersona = :idpersona 
+2018.01.05 17.34.38 [Cooperadora/getCooperadoraCuotasAño/2018/7272]  select cp.id as idcuota,cp.año,cp.mes,cp.cuota,od.monto,op.fecha as fechapago,
+            (case when od.idoperaciondetalle is null then false else true end) as pago 
+            from operaciondetalle od
+            INNER JOIN operaciones op on (od.idoperacion = op.idoperacion and op.idpersona = :idpersona and op.anulada = 0)
+            RIGHT join cooperadoracuotas cp on (od.idcuota = cp.id)
+            where cp.año = :anio 
+            order by cp.año, mes
+2018.01.05 17.34.38 [Cooperadora/getOperacionesPersona/7272] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' | ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idpersona = :idpersona and o.anulada = 0 
+            order by fecha desc limit 100
+2018.01.05 17.34.38 [Aplicacion/getAllCarreras] select distinct año from cooperadoracuotas order by año desc
+2018.01.05 17.34.38 [Aplicacion/getAllCarreras] select valor from configuracion where parametro = 'montoCuotaCooperadora'
+2018.01.05 17.34.38 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.34.44 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.34.44 [Persona/getPersonaById/] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.34.50 [home/menu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.35.05 [Cooperadora/getOperacionesPersona/74] select idoperacion, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.35.35 [Persona/getPersonaById/] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.35.38 [Cooperadora/getOperacionesPersona/74] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.35.44 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.35.52 [Cooperadora/getOperacionesPersona/86] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.35.52 [Persona/getPersonaById/] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.36.03 [Cooperadora/getOperacionesPersona/86] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.36.56 [Persona/getPersonaById/] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.37.09 [Cooperadora/getOperacionesPersona/15841] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.37.09 [Persona/getPersonaById/] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.39.55 [Cooperadora/getOperacionesPersona/15841] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.40.01 [Cooperadora/getOperacionesPersona/25] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.40.04 [Cooperadora/getOperacionesPersona/74] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.40.04 [Persona/getPersonaById/7272] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.idpersona=:idpersona
+2018.01.05 17.40.42 [Cooperadora/getOperacionesPersona/51916] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.40.42 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.40.42 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.40.42 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.40.42 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.40.42 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.40.42 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.40.42 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.40.43 [Persona/getPersonasCooperadora] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 order by apellido, p.nombre
+2018.01.05 17.41.20 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.41.20 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.41.20 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.41.20 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.41.20 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.41.20 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.41.20 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.41.21 [Persona/getPersonasCooperadora] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 order by apellido, p.nombre
+2018.01.05 17.41.24 [Cooperadora/getOperacionesPersona/15841] select idoperacion, idpersona, fecha,
+            (select group_concat(cuota order by idcuota asc  separator ' , ') from operaciondetalle od where od.idoperacion=o.idoperacion ) as cuotas,  o.montototal 
+            from operaciones o 
+            where o.idoperacion = :idoperacion and o.anulada = 0 
+            order by fecha desc
+2018.01.05 17.41.24 [Aplicacion/getAllCarreras] SELECT id,descripcion FROM tipodoc order by id
+2018.01.05 17.41.24 [Aplicacion/getAllCarreras] select idcarrera, nombre, descripcion from carreras where estado=1 order by 2
+2018.01.05 17.41.24 [Aplicacion/getAllInstrumentos] select * from instrumentos
+2018.01.05 17.41.24 [Aplicacion/getAllRoles] select * from roles
+2018.01.05 17.41.24 [Aplicacion/getAllEstadosCooperadora] select * from cooperadoraestados
+2018.01.05 17.41.24 [Aplicacion/getAllCuotas] select * from cooperadoracuotas
+2018.01.05 17.41.24 [Aplicacion/getMenu] select distinct m.idMenu,m.nombre, m.accion as formulario, ifnull(a.certificadotrabajo,0) certificadotrabajo, c.valor matricertif, c2.valor matrisincertif from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  left join permisosroles pr on mp.idPermiso=pr.idpermiso  left join personarol pro on pro.idrol=3 and pro.idpersona=4812 left join alumnos a on a.idpersona=4812 left join configuracion c on c.parametro='matriculacion_permitida_solo_con_certificado' left join configuracion c2 on c2.parametro='matriculacion_permitida_todos' where m.activo=1 and pr.idrol=3 order by m.nombre asc
+2018.01.05 17.41.25 [Persona/getPersonasCooperadora] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+                
+            concat(t.descripcion,' ',p.documentonro) as tipodocynro,
+		ea.descripcion estalu,
+		r.nombre as rol,
+		ce.descripcion as estadocooperadora,
+		cp.fechaultimopago,
+		ifnull(c.nombre,'') carreranombre,
+		u.email
+        from 
+        personas p 
+		inner join personarol pr on p.idpersona=pr.idpersona
+		inner join roles r on pr.idrol=r.idrol
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc
+		left join alumnos a on p.idpersona=a.idpersona
+        left join estadoalumno ea on a.estadoalumno_id=ea.id
+        left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.estado in (1,2)
+        left join carreras c on ac.idcarrera=c.idcarrera
+		left join alumnomateria am on p.idpersona=am.idpersona
+		left join cooperadorapersona cp on p.idpersona=cp.idpersona
+		left join cooperadoraestados ce on cp.idestado=ce.id
+        where p.estado=1 order by apellido, p.nombre

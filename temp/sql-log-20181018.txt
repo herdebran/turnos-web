@@ -1,0 +1,73 @@
+2018.10.18 07.36.55 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuarios u inner join personas p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.10.18 07.36.55 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  u.email, u.estado, u.primeracceso FROM personas p inner join usuarios u on p.idpersona=u.idpersona where p.idpersona=1
+2018.10.18 07.36.55 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.10.18 07.36.56 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','admin','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.10.18 07.36.56 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=1
+2018.10.18 07.36.56 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso where pr.idRol=1 union all select p.idpermiso,pe.nombre as nombre from personapermisos p inner join permisos pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.10.18 07.36.56 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.10.18 07.36.56 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.37.02 [Aplicacion/getAllTipoDocumento] SELECT idtipodocumento as id, descripcion FROM tipodocumento order by idtipodocumento
+2018.10.18 07.37.02 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.37.02 [Aplicacion/getAllPermisos] select * from permisos order by nombre
+2018.10.18 07.37.02 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.37.06 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.37.06 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.39.04 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.39.11 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.10.18 07.39.11 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.39.11 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.39.15 [Aplicacion/getAllProvincias] SELECT idprovincia, descripcion FROM provincia
+2018.10.18 07.39.15 [Aplicacion/ajaxAllMunicipios/]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.10.18 07.39.15 [Aplicacion/ajaxAllLocalidades/]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.10.18 07.39.15 [Aplicacion/ajaxAllMunicipios/]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.10.18 07.39.15 [Aplicacion/ajaxAllLocalidades/]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.10.18 07.39.15 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.10.18 07.39.15 [Aplicacion/getAllTipoDocumento] SELECT idtipodocumento as id, descripcion FROM tipodocumento order by idtipodocumento
+2018.10.18 07.39.15 [Aplicacion/getAllTipoCondicionIVA] select idtipocondicioniva, descripcion from tipocondicioniva order by descripcion
+2018.10.18 07.39.18 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.10.18 07.39.18 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.39.18 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.39.22 [Aplicacion/getAllTipoDocumento] SELECT idtipodocumento as id, descripcion FROM tipodocumento order by idtipodocumento
+2018.10.18 07.39.22 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.39.22 [Aplicacion/getAllPermisos] select * from permisos order by nombre
+2018.10.18 07.39.22 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.39.59 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.40.00 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.42.08 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.42.08 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.42.09 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.42.09 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.44.05 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.44.05 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.48.09 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.48.09 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.48.49 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.48.49 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.48.51 [Aplicacion/getAllTipoDocumento] SELECT idtipodocumento as id, descripcion FROM tipodocumento order by idtipodocumento
+2018.10.18 07.48.51 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.48.51 [Aplicacion/getAllPermisos] select * from permisos order by nombre
+2018.10.18 07.48.51 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.49.10 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.49.10 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.50.54 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.50.54 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id
+2018.10.18 07.51.29 [Aplicacion/getAllTipoDocumento] SELECT idtipodocumento as id, descripcion FROM tipodocumento order by idtipodocumento
+2018.10.18 07.51.29 [Aplicacion/getAllRoles] select * from roles order by nombre
+2018.10.18 07.51.29 [Aplicacion/getAllPermisos] select * from permisos order by nombre
+2018.10.18 07.51.29 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 07.51.32 [Permiso/getPersonasPermisos] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,p.apellido,p.nombre,
+                concat(t.descripcion,' ',p.documentonro) as tipodocynro, 
+                (case when u.estado=1 then 'SI' else 'NO' end) as estado,
+                (select group_concat(rol.nombre separator '-') from personarol prol 
+                inner join roles rol on prol.idrol=rol.idrol where prol.idpersona=p.idpersona) as rol
+        from 
+        personas p 
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join roles r on pr.idrol=r.idrol
+        left join permisosroles pr2 on r.idrol=pr2.idrol
+        left join personapermisos pp on p.idpersona=pp.idpersona
+        inner join usuarios u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc where 1=1  GROUP by p.idpersona order by p.apellido asc,p.nombre asc
+2018.10.18 08.01.04 [permisos/crearpersona]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermisos mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermisos where idpersona=1 union all select idpermiso from permisosroles where idrol=1 ) and m.activo=1 order by m.nombre asc
+2018.10.18 08.01.04 [permisos/crearpersona] SELECT id,descripcion FROM tipodoc order by id

@@ -1,0 +1,38 @@
+{
+  "name": "paper-css",
+  "version": "0.3.0",
+  "description": "Paper CSS for happy printing",
+  "files": [
+    "bin",
+    "lib",
+    "paper.css",
+    "paper.min.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cognitom/paper-css.git"
+  },
+  "keywords": [
+    "css",
+    "print",
+    "pdf",
+    "cli"
+  ],
+  "author": "Tsutomu Kawamura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cognitom/paper-css/issues"
+  },
+  "homepage": "https://github.com/cognitom/paper-css",
+  "devDependencies": {
+    "clean-css": "^3.4.23",
+    "electron-pdf": "^1.2.0",
+    "live-server": "^1.2.0"
+  },
+  "scripts": {
+    "build": "npm run minify && npm run export",
+    "minify": "cleancss paper.css -o paper.min.css",
+    "preview": "live-server examples/receipt.html",
+    "export": "electron-pdf examples/receipt.html images/receipt.pdf"
+  }
+}

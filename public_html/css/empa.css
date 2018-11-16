@@ -1,0 +1,128 @@
+/**
+  * EMPA CSS 
+  * Override de clases para el sitio 
+  *
+  * @package  empa
+  * @version  1.0
+  * @access   public
+  * @copyright 2015-2017 7dedos
+  * @author Augusto Wloch <agosto@7dedos.com>
+  */
+
+body {
+  padding-top: 70px;
+  padding-bottom: 0;
+  height: 100%;
+}
+html { height: 100%; }
+.user-card {
+	padding: 0 20px;
+	color: #111;
+	text-align: left;
+  min-width: 200px;
+}
+
+.pagination { margin: 0; }
+
+.no-pad { padding-left: 0;  padding-right: 0; }
+
+.spaced-row {
+    margin-bottom: 15px;
+}
+
+.navbar-empa {
+  background-color: #DF7B1D;
+  border-color: #E7D326;
+  color: #ccc;
+}
+
+
+
+.navbar-empa .navbar-brand:hover,
+.navbar-empa .navbar-brand:focus {
+    color: #5E5E5E;
+}
+/* link */
+.navbar-empa .navbar-nav > li > a {
+    color: #efefef;
+}
+.navbar-empa .navbar-nav > li > a:hover,
+.navbar-empa .navbar-nav > li > a:focus {
+    color: #222;
+}
+.navbar-empa .navbar-nav > .active > a, 
+.navbar-empa .navbar-nav > .active > a:hover, 
+.navbar-empa .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #e7e7e7;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #f7e731;
+}
+.navbar-empa .navbar-nav > .open > a, 
+.navbar-empa .navbar-nav > .open > a:hover, 
+.navbar-empa .navbar-nav > .open > a:focus {
+    color: #222;
+    background-color: #e7d326;
+}
+/* caret */
+.navbar-empa .navbar-nav > .dropdown > a .caret {
+    border-top-color: #f2f2f2;
+    border-bottom-color: #f2f2f2;
+}
+.navbar-empa .navbar-nav > .dropdown > a:hover .caret,
+.navbar-empa .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #333;
+    border-bottom-color: #333;
+}
+.navbar-empa .navbar-nav > .open > a .caret, 
+.navbar-empa .navbar-nav > .open > a:hover .caret, 
+.navbar-empa .navbar-nav > .open > a:focus .caret {
+    border-top-color: #555;
+    border-bottom-color: #555;
+}
+/* mobile version */
+.navbar-empa .navbar-toggle {
+    border-color: #DDD;
+}
+.navbar-empa .navbar-toggle:hover,
+.navbar-empa .navbar-toggle:focus {
+    background-color: #DDD;
+}
+.navbar-empa .navbar-toggle .icon-bar {
+    background-color: #CCC;
+}
+@media (max-width: 767px) {
+    .navbar-empa .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+    .navbar-empa .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-empa .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #333;
+    }
+}
+
+.container {
+    min-height: 90%;
+}
+.footer {
+    margin-top: 30px;
+    font-size: 11px;
+    width: 100%;
+    text-align: center;
+}
+
+.tabla-alumnos th ,
+.tabla-alumnos td {
+    text-align: center;
+
+}
+.tabla-alumnos input {
+    width: 80px;
+}
+
+
+@media print {
+  .hide-on-print { display: none; }
+}

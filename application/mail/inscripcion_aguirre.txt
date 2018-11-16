@@ -1,0 +1,64 @@
+<h2>Seminario Obligatorio – Informativo - Ingreso Conservatorio Julián Aguirre 2018</h2>
+Ver fecha en <a href='http://alumnos.consaguirre.com.ar'>Seminario Ingreso</a>
+<br />
+<br />
+<table border=1 width="100%">
+	<tr>
+		<td align="center">1º Encuentro</td>
+		<td align="center">2º Encuentro</td>
+		<td align="center">3º Encuentro</td>
+	</tr>
+	<tr>
+		<td>&nbsp;<br />&nbsp;<br />&nbsp;</td>
+		<td>&nbsp;<br />&nbsp;<br />&nbsp;</td>
+		<td>&nbsp;<br />&nbsp;<br />&nbsp;</td>
+	</tr>
+</table>
+<br />
+Debe asistir a confirmar la Inscripción En Línea realizada previamente concurriendo desde el 15, 16 o 19 de febrero de 2018 en el horario de 9 a 11, 13 a 15 y de 17 a 19 Hs. – donde se les asignará los horarios de Prueba de Nivelación tanto en Lenguaje Musical como en Instrumento. ver: <a href="">agregar link</a>
+<br />
+<br />
+Los siguientes son los datos registrados de su inscripción:<br />
+<small>Nombre</small> <b>%%NOMBRE%%</b><br />
+<small>Documento</small> <b>%%DOCUMENTO%%</b><br />
+<small>Domicilio</small> <b>%%DOMICILIO%%</b><br />
+<small>Carrera</small> <b>%%CARRERA%%</b><br />
+<small>Instrumento</small> <b>%%INSTRUMENTO%%</b><br />
+<small>Nivel</small> <b>%%NIVEL%%</b><br />
+<br />
+<br />
+<br />
+Reservado para administración de la escuela<br />
+Tercera Instancia: Confirmación de la Inscripción<br />
+<table border=1 width="100%">
+	<tr>
+		<td align="left">Confirmó</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td align="left">Fecha</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	 </tr>
+</table>
+<br />
+Horarios de Nivelación: (sólo para aspirantes que deseen ingresar a Nivel II, III o Sup)
+<table border=1 width="100%">
+	<tr>
+		<td align="center">Instancia</td>
+		<td align="center">Fecha</td>
+		<td align="center">Hora</td>
+		<td align="center">Aula</td>
+	</tr>
+	<tr>
+		<td align="left">Instrumento</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="left">Lenguaje Musical</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	</tr>
+</table>
+<br />
+Ver en página “Matriculación” para completar la Quinta Instancia
