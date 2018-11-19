@@ -36,70 +36,16 @@ class ModeloPersona {
     }
 
     public function getPersona2ById($idpersona) {
-        $sql = "SELECT a.idpersona, a.idtipopersona,a.tipopersona, a.razonsocial, a.apellido, a.nombre, a.entidad ,a.idtipodocumento, 
-        a.tipodocumento, a.documentonro, a.cargoenempresa, a.iddomicilio, a.domiciliocalle, a.domicilionro, a.domiciliopiso,
-        a.domiciliodepto, a.domicilioidlocalidad, a.domiciliolocalidad, a.domicilioidmunicipio, a.domiciliomunicipio, 
-        a.domicilioidprovincia, a.domicilioprovincia, a.iddomiciliofacturacion, a.domiciliofacturacioncalle, a.domiciliofacturacionnro, 
-        a.domiciliofacturacionpiso, a.domiciliofacturaciondepto, a.domiciliofacturacionidlocalidad, a.domiciliofacturacionlocalidad, 
-        a.domiciliofacturacionidmunicipio, a.domiciliofacturacionmunicipio, a.domiciliofacturacionidprovincia, a.domiciliofacturacionprovincia,
-        a.telefono1, a.telefono2, a.telefono3, a.vendedorporcganancia, a.email, a.web, a.idtipocondicioniva,
-        a.tipocondicioniva, a.informacionpago, a.idtipofactura, a.tipofactura, a.facturanombre, a.observaciones, a.estado,
-        a.usucrea, a.fechacrea, a.usumodi, a.fechamodi, a.domicilio, a.domiciliofacturacion,
-        concat(a.apellido,' ',a.nombre) as apeynom,
-        concat(a.tipodocumento,' ',a.documentonro) as tipodocynro
-        FROM viewpersona a
-        where a.idpersona=:idpersona";
-        $params = array(":idpersona" => $idpersona);
-        $this->PDO->prepare($sql);
-        $this->PDO->execute($sql, "persona/getPersonaById", $params);
-        $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    public function getAllWithFilter($filtros) { //NO USAR!!!!
-        $sql = "select p.idpersona,
-                concat(p.apellido,' ',p.nombre) as apeynom,
-                t.descripcion tdoc,p.documentonro,
-                ifnull(date_format(max(ua.fecha), '%d/%m/%Y %H:%i:%s'),'n/a') lastlogin
-            from alumnos a 
-            inner join personas p on p.idpersona=a.idpersona
-            inner join usuarios u on u.idpersona=p.idpersona
-            inner join tipodocumento t on t.idtipodocumento=p.tipodoc
-            left join usuarioaccesos ua on ua.idpersona=p.idpersona
-            where p.estado=1";
-        $params = array();
-        if (isset($filtros['apellido']) && $filtros['apellido'] != "") {
-            $sql .= " and p.apellido like :apellido";
-            $params[":apellido"] = "%" . $filtros['apellido'] . "%";
-        }
-        if (isset($filtros['nombre']) && $filtros['nombre'] != "") {
-            $sql .= " and p.nombre like :nombre";
-            $params[":nombre"] = "%" . $filtros['nombre'] . "%";
-        }
-        if (isset($filtros['tipdoc']) && $filtros['tipdoc'] != "" && $filtros['tipdoc'] != "0") {
-            $sql .= " and t.id=:tipdoc";
-            $params[":tipdoc"] = $filtros['tipdoc'];
-        }
-        if (isset($filtros['nrodoc']) && $filtros['nrodoc'] != "") {
-            $sql .= " and p.documentonro like :nrodoc";
-            $params[":nrodoc"] = "%" . $filtros['nrodoc'] . "%";
-        }
-
-        $sql .= " group by p.idpersona";
-        $sql .= " order by 1, 2";
-        //$sql .= " limit 3";
-        //$sql .= " limit " . (($page - 1) * $this->POROTO->Config['records_per_page']) . "," . $this->POROTO->Config['records_per_page'];
-        $this->PDO->prepare($sql);
-        $this->PDO->execute($sql, "persona/getAllWithFilter", $params);
-        $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        $filtros = array();
+        $filtros['idpersona']=$idpersona;
+        return $this->getPersona($filtros);
     }
 
     public function getPersona($filtros) {
         //continuar
         $sql = "SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
                 case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
-                else a.razonsocial end as denominacion,
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
                 a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
                 concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
                 a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
@@ -120,6 +66,11 @@ class ModeloPersona {
                 LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
                 WHERE 1=1 ";
         $params = array();
+        if (isset($filtros['idpersona']) && $filtros['idpersona'] > 0) {
+            $sql .= " and a.idpersona = :idpersona";
+            $params[":idpersona"] = $filtros['idpersona'];
+        }
+
         if (isset($filtros['idtipopersona']) && $filtros['idtipopersona'] > 0) {
             $sql .= " and a.idtipopersona = :idtipopersona";
             $params[":idtipopersona"] = $filtros['idtipopersona'];
@@ -141,8 +92,14 @@ class ModeloPersona {
 
         $sql .= " order by tp.descripcion, a.razonsocial, a.apellido";
 
+        
         $this->PDO->execute($sql, "persona/getPersona", $params);
-        $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (isset($filtros['idpersona']) && $filtros['idpersona'] > 0) {
+            $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
+        }else{
+            $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
+        }
         return $result;
     }
 

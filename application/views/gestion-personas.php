@@ -65,7 +65,7 @@
       method="POST" accept-charset="utf-8">
     <fieldset>
         <h3>Búsqueda de Personas</h3>
-        <p>Complete al menos un campo para realizar la búsqueda</p>
+        <!--<p>Complete al menos un campo para realizar la búsqueda</p>-->
     
 
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
@@ -81,18 +81,15 @@
         </div>
 
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label for="razonsocialapellido" class="col-xs-4 control-label">Razon Social/Apellido</label>
+            <label for="razonsocialapellido" class="col-xs-4 control-label">Razon Social</label>
             <div class="col-xs-8">
                 <input type="text" class="form-control" id="razonsocialapellido" name="razonsocialapellido" placeholder="" value="">
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-xs-12">
-                <button id="btnBuscar" type="submit" class="btn btn-primary">Buscar</button>
-                <button id="btnReset" type="button" class="btn btn-default">Reset Búsqueda</button>
-                <a href="/crear-persona" class="btn btn-success pull-right">Crear Persona</a>
-            </div>
+            <button id="btnBuscar" type="submit" class="btn btn-primary">Buscar</button>
+            <button id="btnReset" type="button" class="btn btn-default">Limpiar</button>
         </div>
     </fieldset>
 </form>
@@ -121,7 +118,13 @@
     </div>
 </fieldset>
 
-
+<fieldset>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <a href="/crear-persona" class="btn btn-success pull-right">Crear Persona</a>
+        </div>
+    </div>
+</fieldset>
 
 <div class="modal" id="loadingModal">
     <div class="modal-dialog" role="document">
@@ -186,7 +189,7 @@
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    return '<a type="button" class="btn btn-default btn-xs" href="editarentidad/' + row["idpersona"] + '" title="Ver entidad"><i class="glyphicon glyphicon-pencil" ></i></a>';
+                                    return '<a type="button" class="btn btn-default btn-xs" href="crear-persona/' + row["idpersona"] + '" title="Editar..."><i class="glyphicon glyphicon-pencil" ></i></a>';
                                 }
                             }
                         ]

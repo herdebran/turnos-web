@@ -1,0 +1,119 @@
+2018.11.19 20.01.15 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.01.15 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.01.15 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.01.24 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                INNER JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.19 20.03.02 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.03.02 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.03.02 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.05.55 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.05.55 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.05.55 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.06.23 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                INNER JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.19 20.07.33 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.07.33 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.07.33 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.07.35 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                INNER JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.19 20.07.40 [persona/getPersona/2] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                INNER JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                WHERE 1=1  and a.idpersona = :idpersona order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.19 20.07.40 [Aplicacion/getAllProvincias] SELECT idprovincia, descripcion FROM provincia
+2018.11.19 20.07.40 [Aplicacion/ajaxAllMunicipios/]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.11.19 20.07.40 [Aplicacion/ajaxAllLocalidades/]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.19 20.07.40 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.07.40 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.19 20.07.40 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.07.55 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.07.55 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.07.55 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.08.05 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.19 20.08.05 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.19 20.08.05 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.19 20.08.05 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.19 20.08.17 [Aplicacion/getAllProvincias] SELECT idprovincia, descripcion FROM provincia
+2018.11.19 20.08.17 [Aplicacion/ajaxAllMunicipios/]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.11.19 20.08.17 [Aplicacion/ajaxAllLocalidades/]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.19 20.08.17 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.19 20.08.17 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.19 20.08.17 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
