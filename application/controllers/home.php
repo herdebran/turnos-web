@@ -105,7 +105,7 @@ class Home {
 		    $sql = "select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
 		    $arr = $db->getSQLArray($sql);
 		    if (count($arr)==1) {
-			    if (($arr[0]['password'] != $_POST["password"])) {
+			    if (($arr[0]['password'] != md5($_POST["password"]))) {
 				$loginErrorMessage = "Contraseña errónea";
                                 //update last login stamp
                                 $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'".$_POST["username"]."','". $_POST["password"]."','".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
@@ -124,7 +124,7 @@ class Home {
 			}
 
 		    $sql = "SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario, ";
-                    $sql.= " u.email, u.estado, u.primeracceso";
+                    $sql.= " p.email, u.estado, u.primeracceso";
 		    $sql.= " FROM persona p inner join usuario u on p.idpersona=u.idpersona";
 		    $sql.= " where p.idpersona=" . $arr[0]['idpersona'];
 		    $arrUserData = $db->getSQLArray($sql);
@@ -144,7 +144,7 @@ class Home {
 		    $this->POROTO->Session->startSession($arrUserData[0]['idpersona'],$arrUserData[0]['apellido'],$arrUserData[0]['nombre'],$arrUserData[0]['usuario'],$arrUserData[0]['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
 
 		    //update last login stamp
-                    $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  ".$arr[0]['idpersona'].",CURRENT_TIMESTAMP,'".$_POST["username"]."','". $_POST["password"]."','".$remoteIP."','".$navegador."','Acceso concedido'";
+                    $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  ".$arr[0]['idpersona'].",CURRENT_TIMESTAMP,'".$_POST["username"]."','". md5($_POST["password"])."','".$remoteIP."','".$navegador."','Acceso concedido'";
                     $db->insert($sql);
 		    //$sql = "insert into usuarioaccesos (idpersona,fecha) select " . $arr[0]['idpersona'] . ",CURRENT_TIMESTAMP";
 		    //$db->insert($sql);
