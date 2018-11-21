@@ -3,11 +3,14 @@
 class Permisos extends Controller {
 
     private $permisos;
+    private $usuario;
 
     public function __construct($poroto) {
         parent::__construct($poroto);
         include($this->POROTO->ModelPath . '/permisos.php');
+        include($this->POROTO->ModelPath . '/usuario.php');
         $this->permisos = new ModeloPermisos($this->POROTO);
+        $this->usuario = new ModeloUsuario($this->POROTO);
     }
 
     function defentry() {
@@ -58,7 +61,7 @@ class Permisos extends Controller {
         include($this->POROTO->ModelPath . '/persona.php');
         $personaModel = new ModeloPersona($this->POROTO);
         $params = array();
-        $params["usuario"] = $this->permisos->getUsuarioByIdPersona($idpersona);
+        $params["usuario"] = $this->usuario->getUsuarioByIdPersona($idpersona);
         $params["persona"] = $personaModel->getPersonaById($idpersona);
         $params["personaRoles"] = $this->permisos->getPersonaRolesByPersona($idpersona);
         $params["roles"] = $this->app->getAllRoles();
@@ -155,7 +158,7 @@ class Permisos extends Controller {
         }
         include($this->POROTO->ModelPath . '/persona.php');
         $personaModel = new ModeloPersona($this->POROTO);
-        $persona = $this->permisos->getUsuarioByIdPersona($idpersona);
+        $persona = $this->usuario->getUsuarioByIdPersona($idpersona);
         if ($this->permisos->resetpass($idpersona, $persona["usuario"])) {
             $this->ses->setMessage("La contraseña se reseteo exitosamente.", SessionMessageType::Success);
         } else {

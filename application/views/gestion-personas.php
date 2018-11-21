@@ -189,7 +189,13 @@
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    return '<a type="button" class="btn btn-default btn-xs" href="crear-persona/' + row["idpersona"] + '" title="Editar..."><i class="glyphicon glyphicon-pencil" ></i></a>';
+                                    var botones= '<a type="button" class="btn btn-default btn-xs" href="crear-persona/' + row["idpersona"] + '" title="Editar..."><i class="glyphicon glyphicon-pencil" ></i></a>';
+                                    
+                                    if (row["usuario"] == null) {
+                                        botones += '<a type="button" class="btn btn-default btn-xs" href="crearusuario" title="Crear usuario..."><i class="glyphicon glyphicon-user" ></i></a>';
+                                    }
+             
+                                    return botones;
                                 }
                             }
                         ]

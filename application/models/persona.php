@@ -55,15 +55,16 @@ class ModeloPersona {
                 prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
                 concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
                 a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
-                a.observaciones, a.estado,
+                a.observaciones, a.estado, us.usuario as usuario,
                 a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
                 FROM persona a
                 INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
                 INNER JOIN tipodoc td on a.tipodoc=td.id
-                INNER JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
                 LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
                 LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
                 LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
                 WHERE 1=1 ";
         $params = array();
         if (isset($filtros['idpersona']) && $filtros['idpersona'] > 0) {

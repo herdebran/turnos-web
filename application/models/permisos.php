@@ -12,14 +12,6 @@ class ModeloPermisos {
         $this->SES = $poroto->Session;
     }
 
-    public function getUsuarioByIdPersona($idpersona) {
-        $sql = "select * from usuario where idpersona = :idpersona";
-        $params = array(":idpersona" => $idpersona);
-        $this->PDO->execute($sql, "ModeloPermisos/getUsuario", $params);
-        $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
     public function getPersonaRolesByPersona($idpersona) {
         $sql = "select * from personarol where idpersona = :idpersona";
         $params = array(":idpersona" => $idpersona);
