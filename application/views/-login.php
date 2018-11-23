@@ -10,7 +10,7 @@
         <script src="/javascripts/jquery-3.1.1.js"></script>
         <style>
             body {
-                background-color: rgb(186, 196, 200);
+                background-color: #efededf7;
                 padding-top: 40px;
                 padding-bottom: 40px;
                 color: #111;
@@ -77,7 +77,7 @@
             <form class="form-signin" id="loginform" name="login" action="" method="POST" accept-charset="utf-8">
                 <h3>Iniciar Sesion</h3>
                 <label for="username" class="">Usuario</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="Ingrese su usuario (nro de documento)" required autofocus autocomplete="off" />
+                <input type="text" id="username" name="username" class="form-control" placeholder="Ingrese su usuario" required autofocus autocomplete="off" />
                 <label for="password" class="">Contraseña</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required/>
                 <div><a href="#" id="olvidelink">Olvide mi contraseña</a></div><br>

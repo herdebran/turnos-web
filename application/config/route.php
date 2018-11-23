@@ -52,4 +52,5 @@ $route['reportes-dinamicos'] = 'reportedinamico/reportes';
 $route['gestion-permisos'] = 'permisos';
 $route['ajaxmunicipios/(:any)'] = 'fideicomiso/ajaxmunicipios/$1';
 $route['ajaxlocalidades/(:any)'] = 'fideicomiso/ajaxlocalidades/$1';
-$route['crear-usuario'] = 'usuario/crearusuario';
+$route['crear-usuario/(:any)'] = 'usuario/crearusuario/$1';
+$route['guardar-usuario'] = 'usuario/guardarusuario';

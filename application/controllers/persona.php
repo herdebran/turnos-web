@@ -69,6 +69,7 @@ class Persona extends Controller {
         } else {
             $_SESSION['persona_form_error'] = true;
             $_SESSION['persona_form_alerts'] = $params['validationErrors'];
+            $_SESSION['persona_con_error'] = $persona;
             $ses->setMessage("Complete todos los campos.", SessionMessageType::TransactionError);
         }
         if ($idpersona == null) {
@@ -219,23 +220,29 @@ class Persona extends Controller {
         $params = array();
         if (isset($_SESSION['persona_form_error']) && $_SESSION['persona_form_error']) {
             $params['validationErrors'] = $_SESSION['persona_form_alerts'];
+            $persona=$_SESSION['persona_con_error'];
+
             unset($_SESSION['persona_form_alerts']);
             unset($_SESSION['persona_form_error']);
+            unset($_SESSION['persona_con_error']);
         } else {
             $params['validationErrors'] = [];
         }
         if ($idpersona == null) {
             //ALTA DE UNA NUEVA PERSONA
-            
-            $persona = $this->cargarDatosAltaEntidad();
             $params['pageTitle'] = "Crear Persona";
             $params['btnText'] = "Crear";
-        } else {
             
+            if (!isset($persona))
+                $persona = $this->cargarDatosAltaEntidad();
+
+        } else {
             //EDICION DE UNA PERSONA EXISTENTE
-            $persona = $this->personaConFormato($idpersona);
             $params['pageTitle'] = "Modificar Persona";
             $params['btnText'] = "Modificar";
+
+            if (!isset($persona))
+                $persona = $this->personaConFormato($idpersona);
         }
         
         // armo las provincias, municipios y localidades antes de mostrar.

@@ -192,7 +192,7 @@
                                     var botones= '<a type="button" class="btn btn-default btn-xs" href="crear-persona/' + row["idpersona"] + '" title="Editar..."><i class="glyphicon glyphicon-pencil" ></i></a>';
                                     
                                     if (row["usuario"] == null) {
-                                        botones += '<a type="button" class="btn btn-default btn-xs" href="crearusuario" title="Crear usuario..."><i class="glyphicon glyphicon-user" ></i></a>';
+                                        botones += '<a type="button" class="btn btn-default btn-xs" href="crear-usuario/' + row["idpersona"] + '" title="Crear usuario..."><i class="glyphicon glyphicon-user" ></i></a>';
                                     }
              
                                     return botones;
