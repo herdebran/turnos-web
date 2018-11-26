@@ -7,6 +7,8 @@ class Novedades {
     private $db;
     private $ses;
     private $lib;
+    private $persona;
+
 
     function __construct($poroto) {
         $this->POROTO = $poroto;
@@ -15,6 +17,9 @@ class Novedades {
         $this->db = & $this->POROTO->DB;
         $this->ses = & $this->POROTO->Session;
         $this->lib = & $this->POROTO->Libraries['siteLibrary'];
+        include($this->POROTO->ModelPath . '/persona.php');
+        $this->persona = new ModeloPersona($this->POROTO);
+        
     }
 
     function defentry() {
@@ -28,7 +33,7 @@ class Novedades {
     function index() {
         $this->db->dbConnect("home/menu");
         $arrMenu = $this->POROTO->DB->getSQLArray($this->POROTO->getMenuSqlQuery());
-        $saludo = $this->load_saludo($this->ses->getIdPersona());
+        $saludo = $this->persona->obtenerSaludoHome($this->ses->getIdPersona());
         $roles = $this->load_roles();
         $editor = $this->ses->tienePermiso('', 'Gestión de Novedades');
         $novedades = $this->load_novedades($this->ses->getIdRole());
@@ -36,21 +41,6 @@ class Novedades {
         include($this->POROTO->ViewPath . "/-header.php");
         include($this->POROTO->ViewPath . "/novedades.php");
         include($this->POROTO->ViewPath . "/-footer.php");
-    }
-
-    private function load_saludo($idpersona) {
-
-        $sql = "SELECT apellido,nombre FROM persona WHERE idpersona=:idpersona";
-        $query = $this->PDO->prepare($sql);
-        $params = array(':idpersona' => $idpersona);
-        $query->execute($params);
-        $arrSaludo = $query->fetch(PDO::FETCH_ASSOC);
-
-        $saludo = "Bienvenido/a";
-        if (count($arrSaludo) == 1) {
-            $saludo .= " " . $arrSaludo[0]['nombre'] . " " . $arrSaludo[0]['apellido'] . ".";
-        }
-        return $saludo;
     }
 
     // Carga todas las novedades disponibles segun el rol del usuario (si es ADMINISTRATIVO carga todas)

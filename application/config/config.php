@@ -15,7 +15,7 @@ $config['default_timezone'] = 'America/Argentina/Buenos_Aires';
 $config['default_controller'] = 'novedades';
 $config['default_controller_function'] = 'defentry';
 
-$config['password_constraints_explained'] = 'La contraseña debe contener letras y/o números, y tener una longitud mínima de 6 caracteres';
+$config['password_constraints_explained'] = 'La contraseña debe contener letras y/o números, y tener una longitud mínima de 8 caracteres';
 $config['records_per_page'] = 30;
 
 $config['session_minutes_alive'] = 20;

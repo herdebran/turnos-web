@@ -1,0 +1,488 @@
+2018.11.26 07.31.02 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 07.31.02 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 07.31.02 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 07.31.02 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 07.31.02 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 07.31.02 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 07.31.02 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 07.31.03 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.31.08 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.31.08 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.31.08 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.31.10 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 07.31.27 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.31.48 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 07.31.48 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 07.31.48 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 07.31.48 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 07.31.48 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 07.31.48 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 07.31.48 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 07.31.48 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.32.27 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.26 07.32.27 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.32.27 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.32.27 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.46.33 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 07.46.33 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 07.46.33 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 07.46.33 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 07.46.33 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 07.46.33 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 07.46.33 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 07.46.33 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.52.23 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.52.23 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.52.23 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.52.32 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 07.57.33 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 07.57.33 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 07.57.33 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 07.57.33 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 07.57.33 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 07.57.33 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 07.57.33 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 07.57.34 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.57.37 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.57.37 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.57.37 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.57.40 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 07.57.41 [Aplicacion/getAllProvincias] SELECT idprovincia, descripcion FROM provincia
+2018.11.26 07.57.41 [Aplicacion/ajaxAllMunicipios/]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.11.26 07.57.41 [Aplicacion/ajaxAllLocalidades/]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.26 07.57.41 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.57.41 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.26 07.57.41 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.58.09 [Aplicacion/ajaxAllMunicipios/1]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.11.26 07.58.09 [Aplicacion/ajaxAllLocalidades/0]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.26 07.58.12 [Aplicacion/ajaxAllLocalidades/31]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.26 07.58.22 [Aplicacion/ajaxAllLocalidades/45]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.26 07.58.35 [Aplicacion/getAllProvincias] SELECT idprovincia, descripcion FROM provincia
+2018.11.26 07.58.35 [Aplicacion/ajaxAllMunicipios/1]  select idmunicipio, descripcion from municipio where idprovincia=:idprovincia order by descripcion
+2018.11.26 07.58.35 [Aplicacion/ajaxAllLocalidades/45]  select idlocalidad, descripcion, codigopostal from localidad where idmunicipio=:idmunicipio order by descripcion
+2018.11.26 07.58.35 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.58.35 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.26 07.58.35 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.58.43 [BEGIN TRANSACTION] BEGIN
+2018.11.26 07.58.43 [persona/nuevoDomicilio/ituzaingo/838///479/admin/2018-11-26 07:58:43] insert into domicilio (calle, nro, piso, depto, idlocalidad,
+        usucrea, fechacrea)
+        values(:calle, :nro, :piso, :depto, :idlocalidad, :usucrea, :fechacrea)
+2018.11.26 07.58.43 [persona/nuevaPersona/3/persona generica/generica/persona/1/12345678/40/442345/////es del campo/admin/2018-11-26 07:58:43] insert into persona (idtipopersona, razonsocial, apellido, nombre, tipodoc,
+                    documentonro, iddomicilio, telefono1, telefono2,
+                    telefono3, email, web, observaciones, estado, usucrea, fechacrea)
+                    values(:idtipopersona, :razonsocial, :apellido, :nombre, :tipodoc,
+                    :documentonro, :iddomicilio, :telefono1, :telefono2,
+                    :telefono3, :email, :web, :observaciones, 1, :usucrea, :fechacrea)
+2018.11.26 07.58.43 [COMMIT TRANSACTION] COMMIT
+2018.11.26 07.58.43 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.58.43 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.58.43 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.58.46 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 07.58.48 [persona/getPersonaById/4] SELECT distinct p.idpersona, p.email,
+                p.tipodoc tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+        concat(td.descripcion,' ',p.documentonro) as tipodocynro,
+		r.nombre as rol,
+		p.email
+        from 
+        persona p 
+        INNER JOIN tipodoc td on p.tipodoc=td.id
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        where p.idpersona=:idpersona
+2018.11.26 07.58.48 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.00 [BEGIN TRANSACTION] BEGIN
+2018.11.26 07.59.00 [usuario/persistirUsuario/4/paciente/25d55ad283aa400af464c76d713c07ad/admin/2018-11-26 07:59:00] insert into usuario (idpersona,usuario,password,estado,primeracceso, usucrea, fechacrea)
+                    values(:idpersona,:usuario,:password,1,1, :usucrea, :fechacrea)
+2018.11.26 07.59.00 [COMMIT TRANSACTION] COMMIT
+2018.11.26 07.59.00 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 07.59.00 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.00 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.03 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 07.59.09 [Aplicacion/getAllTipoDocumento] SELECT id, descripcion FROM tipodoc order by id
+2018.11.26 07.59.09 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.09 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.59.09 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.11 [Permiso/getPersonasPermisos] select distinct p.idpersona,t.descripcion tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,p.apellido,p.nombre,
+                concat(t.descripcion,' ',p.documentonro) as tipodocynro, 
+                (case when u.estado=1 then 'SI' else 'NO' end) as estado,
+                (select group_concat(rol.nombre separator '-') 
+                from personarol prol 
+                inner join rol on prol.idrol=rol.idrol 
+                where prol.idpersona=p.idpersona) as rol
+        from 
+        persona p 
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        left join permisorol pr2 on r.idrol=pr2.idrol
+        left join personapermiso pp on p.idpersona=pp.idpersona
+        inner join usuario u on u.idpersona=p.idpersona
+        inner join tipodoc t on t.id=p.tipodoc where 1=1  GROUP by p.idpersona order by p.apellido asc,p.nombre asc
+2018.11.26 07.59.14 [ModeloUsuario/getUsuarioByIdPersona/4] select * from usuario where idpersona = :idpersona
+2018.11.26 07.59.14 [persona/getPersonaById/4] SELECT distinct p.idpersona, p.email,
+                p.tipodoc tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+        concat(td.descripcion,' ',p.documentonro) as tipodocynro,
+		r.nombre as rol,
+		p.email
+        from 
+        persona p 
+        INNER JOIN tipodoc td on p.tipodoc=td.id
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        where p.idpersona=:idpersona
+2018.11.26 07.59.14 [ModeloPermisos/getPersonaRolesByPersona/4] select * from personarol where idpersona = :idpersona
+2018.11.26 07.59.14 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.14 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.59.14 [ModeloPermisos/getPermisosAsignados/4] select distinct idpersona,idpermiso,'' as rol 
+                from personapermiso 
+                where idpersona = :idpersona
+                union all
+                select distinct :idpersona as idpersona,pr2.idpermiso,r.nombre as rol 
+                from personarol pr 
+                inner join permisorol pr2 on pr.idrol=pr2.idrol
+                inner join rol r on pr.idrol=r.idrol
+                where pr.idpersona=:idpersona
+2018.11.26 07.59.14 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.17 [desde permisos] BEGIN
+2018.11.26 07.59.17 [ModeloPermisos/setPersonaRol/4/8/admin] insert into personarol(idpersona,idrol,usucrea,fechacrea) values(:idpersona,:idrol,:usucrea,CURRENT_TIMESTAMP)
+2018.11.26 07.59.17 [desde el permisos] COMMIT
+2018.11.26 07.59.17 [ModeloUsuario/getUsuarioByIdPersona/4] select * from usuario where idpersona = :idpersona
+2018.11.26 07.59.17 [persona/getPersonaById/4] SELECT distinct p.idpersona, p.email,
+                p.tipodoc tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+        concat(td.descripcion,' ',p.documentonro) as tipodocynro,
+		r.nombre as rol,
+		p.email
+        from 
+        persona p 
+        INNER JOIN tipodoc td on p.tipodoc=td.id
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        where p.idpersona=:idpersona
+2018.11.26 07.59.17 [ModeloPermisos/getPersonaRolesByPersona/4] select * from personarol where idpersona = :idpersona
+2018.11.26 07.59.17 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.17 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.59.17 [ModeloPermisos/getPermisosAsignados/4] select distinct idpersona,idpermiso,'' as rol 
+                from personapermiso 
+                where idpersona = :idpersona
+                union all
+                select distinct :idpersona as idpersona,pr2.idpermiso,r.nombre as rol 
+                from personarol pr 
+                inner join permisorol pr2 on pr.idrol=pr2.idrol
+                inner join rol r on pr.idrol=r.idrol
+                where pr.idpersona=:idpersona
+2018.11.26 07.59.17 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.36 [ModeloPermisos/setpersonapermiso/4/1] insert into personapermisos(idpersona,idpermiso) values(:idpersona,:idpermiso)
+2018.11.26 07.59.36 [ModeloUsuario/getUsuarioByIdPersona/4] select * from usuario where idpersona = :idpersona
+2018.11.26 07.59.36 [persona/getPersonaById/4] SELECT distinct p.idpersona, p.email,
+                p.tipodoc tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+        concat(td.descripcion,' ',p.documentonro) as tipodocynro,
+		r.nombre as rol,
+		p.email
+        from 
+        persona p 
+        INNER JOIN tipodoc td on p.tipodoc=td.id
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        where p.idpersona=:idpersona
+2018.11.26 07.59.36 [ModeloPermisos/getPersonaRolesByPersona/4] select * from personarol where idpersona = :idpersona
+2018.11.26 07.59.36 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.36 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.59.36 [ModeloPermisos/getPermisosAsignados/4] select distinct idpersona,idpermiso,'' as rol 
+                from personapermiso 
+                where idpersona = :idpersona
+                union all
+                select distinct :idpersona as idpersona,pr2.idpermiso,r.nombre as rol 
+                from personarol pr 
+                inner join permisorol pr2 on pr.idrol=pr2.idrol
+                inner join rol r on pr.idrol=r.idrol
+                where pr.idpersona=:idpersona
+2018.11.26 07.59.36 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.43 [ModeloPermisos/setpersonapermiso/4/1] insert into personapermisos(idpersona,idpermiso) values(:idpersona,:idpermiso)
+2018.11.26 07.59.43 [ModeloUsuario/getUsuarioByIdPersona/4] select * from usuario where idpersona = :idpersona
+2018.11.26 07.59.43 [persona/getPersonaById/4] SELECT distinct p.idpersona, p.email,
+                p.tipodoc tdoc, p.documentonro,
+		concat(p.apellido,' ',p.nombre) as apeynom,
+        concat(td.descripcion,' ',p.documentonro) as tipodocynro,
+		r.nombre as rol,
+		p.email
+        from 
+        persona p 
+        INNER JOIN tipodoc td on p.tipodoc=td.id
+	left join personarol pr on p.idpersona=pr.idpersona
+	left join rol r on pr.idrol=r.idrol
+        where p.idpersona=:idpersona
+2018.11.26 07.59.44 [ModeloPermisos/getPersonaRolesByPersona/4] select * from personarol where idpersona = :idpersona
+2018.11.26 07.59.44 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 07.59.44 [Aplicacion/getAllPermisos] select * from permiso order by nombre
+2018.11.26 07.59.44 [ModeloPermisos/getPermisosAsignados/4] select distinct idpersona,idpermiso,'' as rol 
+                from personapermiso 
+                where idpersona = :idpersona
+                union all
+                select distinct :idpersona as idpersona,pr2.idpermiso,r.nombre as rol 
+                from personarol pr 
+                inner join permisorol pr2 on pr.idrol=pr2.idrol
+                inner join rol r on pr.idrol=r.idrol
+                where pr.idpersona=:idpersona
+2018.11.26 07.59.44 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 07.59.54 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='persona' AND u.estado=1 AND p.estado=1
+2018.11.26 07.59.54 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'persona','12345678','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Usuario inválido o deshabilitado'
+2018.11.26 08.00.02 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.00.02 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.00.02 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.00.02 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.00.02 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.00.02 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.00.02 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.00.02 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.00.06 [Aplicacion/getAllTipoPersona] select idtipopersona, descripcion from tipopersona order by descripcion
+2018.11.26 08.00.06 [Aplicacion/getAllRoles] select * from rol order by nombre
+2018.11.26 08.00.06 [Aplicacion/getMenu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.00.07 [persona/getPersona] SELECT a.idpersona, a.idtipopersona,tp.descripcion as tipopersona,
+                case when a.razonsocial = '' or a.razonsocial is null then concat(a.apellido,' ',a.nombre) 
+                else a.razonsocial end as denominacion,a.apellido, a.nombre,a.razonsocial,
+                a.tipodoc as idtipodocumento, td.descripcion as tipodocumento, a.documentonro, 
+                concat(td.descripcion,' ',a.documentonro) as tipodocynro, 
+                a.iddomicilio, do.calle as domiciliocalle, do.nro as domicilionro, 
+                do.piso as domiciliopiso,do.depto as domiciliodepto, 
+                do.idlocalidad as domicilioidlocalidad,ifnull(lo.descripcion,'') as domiciliolocalidad, 
+                mu.idmunicipio as domicilioidmunicipio, mu.descripcion as domiciliomunicipio, 
+                prov.idprovincia as domicilioidprovincia, prov.descripcion as domicilioprovincia,  
+                concat(ifnull(do.calle,''),' ',ifnull(do.nro,''), ' ',ifnull(lo.descripcion,'')) as domicilio,
+                a.telefono1, a.telefono2, a.telefono3, a.email, a.web,
+                a.observaciones, a.estado, us.usuario as usuario,
+                a.usucrea, a.fechacrea, a.usumodi, a.fechamodi
+                FROM persona a
+                INNER JOIN tipopersona tp on a.idtipopersona=tp.idtipopersona
+                INNER JOIN tipodoc td on a.tipodoc=td.id
+                LEFT JOIN domicilio do on a.iddomicilio=do.iddomicilio
+                LEFT JOIN localidad lo on do.idlocalidad=lo.idlocalidad
+                LEFT JOIN municipio mu on mu.idmunicipio=lo.idmunicipio
+                LEFT JOIN provincia prov on prov.idprovincia=mu.idprovincia
+                LEFT JOIN usuario us on a.idpersona=us.idpersona
+                WHERE 1=1  order by tp.descripcion, a.razonsocial, a.apellido
+2018.11.26 08.00.18 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='persona' AND u.estado=1 AND p.estado=1
+2018.11.26 08.00.18 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'persona','12345678','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Usuario inválido o deshabilitado'
+2018.11.26 08.00.56 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='paciente' AND u.estado=1 AND p.estado=1
+2018.11.26 08.00.56 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=4
+2018.11.26 08.00.56 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4 order by 1
+2018.11.26 08.00.56 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  4,CURRENT_TIMESTAMP,'paciente','25d55ad283aa400af464c76d713c07ad','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.01.00 [home/primeracceso] update usuarios set primeracceso=0 where idpersona=4
+2018.11.26 08.01.00 [home/primeracceso] Table 'turnos.usuarios' doesn't exist
+2018.11.26 08.11.31 [home/primeracceso] update usuario set primeracceso=0 where idpersona=4
+2018.11.26 08.11.31 [home/primeracceso] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4
+2018.11.26 08.11.31 [home/primeracceso] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=8 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 4 order by nombre 
+2018.11.26 08.11.31 [home/primeracceso] select parametro,valor from configuracion order by orden
+2018.11.26 08.11.32 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=4 union all select idpermiso from permisorol where idrol=8 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.12.05 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='persona' AND u.estado=1 AND p.estado=1
+2018.11.26 08.12.05 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'persona','12345678','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Usuario inválido o deshabilitado'
+2018.11.26 08.12.17 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='paciente' AND u.estado=1 AND p.estado=1
+2018.11.26 08.12.17 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=4
+2018.11.26 08.12.17 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4 order by 1
+2018.11.26 08.12.17 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  4,CURRENT_TIMESTAMP,'paciente','25d55ad283aa400af464c76d713c07ad','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.12.17 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4
+2018.11.26 08.12.17 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=8 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 4 order by nombre 
+2018.11.26 08.12.17 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.12.17 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=4 union all select idpermiso from permisorol where idrol=8 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.15.42 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.15.42 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.15.42 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.15.42 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.15.42 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.15.42 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.15.42 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.15.42 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.29.11 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.29.11 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.29.11 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.29.11 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.29.11 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.29.11 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.29.11 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.29.11 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.29.36 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.29.50 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.29.50 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.29.50 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.29.50 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.29.50 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.29.50 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.29.50 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.29.50 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.30.13 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.30.13 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.30.13 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.30.13 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.30.13 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.30.13 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.30.13 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.30.14 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.31.00 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.31.00 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.31.00 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.31.00 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.31.00 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.31.00 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.31.00 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.31.00 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.35.39 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 08.35.42 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 08.35.43 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 08.35.51 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 08.35.54 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 08.36.00 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 08.36.13 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 08.38.34 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.40.23 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.46.37 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.52.31 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.52.31 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona=:idpersona
+2018.11.26 08.52.59 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.52.59 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona=:idpersona
+2018.11.26 08.53.07 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.53.15 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona=:idpersona
+2018.11.26 08.54.51 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.54.58 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 08.56.09 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 08.56.26 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.00.07 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.00.10 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.00.31 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.00.36 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.10.02 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.10.02 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.10.35 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.10.35 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.10.54 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='admin' AND u.estado=1 AND p.estado=1
+2018.11.26 09.10.54 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=1
+2018.11.26 09.10.54 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1 order by 1
+2018.11.26 09.10.54 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  1,CURRENT_TIMESTAMP,'admin','21232f297a57a5a743894a0e4a801fc3','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 09.10.54 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=1
+2018.11.26 09.10.54 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=6 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 1 order by nombre 
+2018.11.26 09.10.54 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 09.10.54 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.10.54 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.11.08 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=1 union all select idpermiso from permisorol where idrol=6 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.11.09 [persona/obtenerSaludoHome/1] select nombre from persona where idpersona = :idpersona
+2018.11.26 09.11.30 [seguridad/login] select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='paciente' AND u.estado=1 AND p.estado=1
+2018.11.26 09.11.30 [seguridad/login] SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario,  p.email, u.estado, u.primeracceso FROM persona p inner join usuario u on p.idpersona=u.idpersona where p.idpersona=4
+2018.11.26 09.11.30 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4 order by 1
+2018.11.26 09.11.30 [seguridad/login] insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  4,CURRENT_TIMESTAMP,'paciente','25d55ad283aa400af464c76d713c07ad','::1','Mozilla/5.0 (Windows NT 6.1; Win64; x64)','Acceso concedido'
+2018.11.26 09.11.30 [seguridad/login] select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=4
+2018.11.26 09.11.30 [seguridad/login] select p.idpermiso,p.nombre as nombre from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso where pr.idRol=8 union all select p.idpermiso,pe.nombre as nombre from personapermiso p inner join permiso pe on p.idpermiso=pe.idpermiso where p.idpersona= 4 order by nombre 
+2018.11.26 09.11.30 [seguridad/login] select parametro,valor from configuracion order by orden
+2018.11.26 09.11.31 [home/menu]  select distinct m.idMenu,m.nombre, m.accion as formulario from menu m inner join menupermiso mp on m.idMenu=mp.idMenu  where mp.idpermiso in (  select idpermiso from personapermiso where idpersona=4 union all select idpermiso from permisorol where idrol=8 ) and m.activo=1 order by m.nombre asc
+2018.11.26 09.11.31 [persona/obtenerSaludoHome/4] select nombre from persona where idpersona = :idpersona

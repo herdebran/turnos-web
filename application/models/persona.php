@@ -287,4 +287,25 @@ class ModeloPersona {
         return $result;
     }
 
+    /**
+     * Dado un id de persona devuelve un saludo amigable utilizando el nombre de la persona.
+     * @param type $idpersona
+     * @return string
+     */
+    public function obtenerSaludoHome($idpersona){
+        $result = "¡Hola!";
+        $sql = "select nombre from persona where idpersona = :idpersona";
+        $params = array(":idpersona" => $idpersona);
+ 
+        $this->PDO->prepare($sql);
+        $this->PDO->execute($sql, 'persona/obtenerSaludoHome', $params);
+        $arrSaludo=$this->PDO->fetch(PDO::FETCH_ASSOC); 
+        
+        if ($arrSaludo!= null) {
+            if ($arrSaludo['nombre'] != null) { 
+                $result = "¡Hola " .$arrSaludo['nombre'] . "!";
+            }
+        }
+        return $result;
+    }
 }

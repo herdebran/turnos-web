@@ -85,7 +85,7 @@ class siteLibrary {
 		// recordar sincronizar cualquier cambio en estas reglas, con el valor de
 		// configuracion: $config['password_constraints_explained']
 		$bOk = true;
-		if (strlen(trim($password)) < 6) $bOk = false;
+		if (strlen(trim($password)) < 8) $bOk = false;
 		if (!ctype_alnum($password)) $bOk =false;
 		return ($bOk);
 	}
