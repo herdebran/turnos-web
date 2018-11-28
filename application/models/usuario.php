@@ -31,6 +31,11 @@ class ModeloUsuario {
         return $this->PDO->lastInsertId();
     }
 
+    /**
+     * Devuelve un array con datos del usuario coincidentes con el idpersona
+     * @param type $idpersona
+     * @return type
+     */
     public function getUsuarioByIdPersona($idpersona) {
         $sql = "select * from usuario where idpersona = :idpersona";
         $params = array(":idpersona" => $idpersona);
@@ -39,4 +44,39 @@ class ModeloUsuario {
         return $result;
     }
 
+    /**
+     * Se inserta un registro en usuarioaccesos con los detalles del ingreso
+     * @param type $param
+     * @return type
+     */
+    public function persistirAccesoUsuario($valores) {
+        $nombreCaller='usuario/persistirAccesoUsuario';
+        $this->PDO->beginTransaction($nombreCaller);
+
+        try {
+        
+            $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) "
+                    . "values(:idpersona,CURRENT_TIMESTAMP,:usuario,:contrasena,:ip,:navegador,:estado)";
+
+            $params = array(
+                ":idpersona" => $valores["idpersona"],
+                ":usuario" => $valores["usuario"],
+                ":contrasena" => $valores["contrasena"],
+                ":ip" => $valores["ip"],
+                ":navegador" => $valores["navegador"],
+                ":estado" => $valores["estado"]
+            );
+
+            $this->PDO->execute($sql, $nombreCaller, $params);
+            $this->PDO->commitTransaction($nombreCaller);
+            return array("ok" => true, "message" => "Se insertó satisfactoriamente.");
+
+        }
+        catch (Exception $e) {
+            //Rollback the transaction.
+            $this->PDO->rollbackTransaction($nombreCaller . $e->getMessage());
+            return array("ok" => false, "message" => "Error al persistir en usuarioaccesos.");
+        }
+    }
+    
 }

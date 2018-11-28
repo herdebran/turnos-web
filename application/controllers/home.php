@@ -1,10 +1,14 @@
 <?php
 class Home {
     private $POROTO;
+    private $usuario;
+
 
     function __construct($poroto) {
         $this->POROTO=$poroto;
         $this->POROTO->pageHeader[] = array("label"=>"Dashboard","url"=>"");
+        include($this->POROTO->ModelPath . '/usuario.php');
+        $this->usuario = new ModeloUsuario($this->POROTO);
     }
 
     function defentry() {
@@ -81,23 +85,22 @@ class Home {
                 $sql = "select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
                 $arr = $db->getSQLArray($sql);
                 if (count($arr)==1) {
-                        if (($arr[0]['password'] != md5($_POST["password"]))) {
-                            $loginErrorMessage = "Contraseña errónea";
-                            //update last login stamp
-                            $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'".$_POST["username"]."','". $_POST["password"]."','".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
-                            $db->insert($sql);
-                            $db->dbDisconnect();
-                            include($this->POROTO->ViewPath . "/-login.php");
-                            exit();
-                            }
-                    } else {
-                            $loginErrorMessage = "Usuario inválido o deshabilitado";
-                            $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  null,CURRENT_TIMESTAMP,'".$_POST["username"]."','". $_POST["password"]."','".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
-                            $db->insert($sql);
-                            $db->dbDisconnect();
-                            include($this->POROTO->ViewPath . "/-login.php");
-                            exit();
+                    if (($arr[0]['password'] != md5($_POST["password"]))) {
+                        $loginErrorMessage = "Contraseña errónea";
+
+                        $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
+
+                        include($this->POROTO->ViewPath . "/-login.php");
+                        exit();
                     }
+                } else {
+                    $loginErrorMessage = "Usuario inválido o deshabilitado";
+
+                    $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
+
+                    include($this->POROTO->ViewPath . "/-login.php");
+                    exit();
+                }
 
                 $sql = "SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario, ";
                 $sql.= " p.email, u.estado, u.primeracceso";
@@ -333,7 +336,17 @@ class Home {
             echo json_encode($response);
         }   
     }
-
+    /**
+     * Arma un array y llama al modelo para persistir el acceso
+     */
+    function guardarAccesoUsuario($idpersona,$usuario,$contraseña,$remoteIP,$navegador,$estado){
+        $valores = array();
+        $valores["idpersona"]=$idpersona;
+        $valores["usuario"]=$usuario;
+        $valores["contrasena"]=$contraseña;
+        $valores["ip"]=$remoteIP;
+        $valores["navegador"]=$navegador;
+        $valores["estado"]=$estado;
+        $this->usuario->persistirAccesoUsuario($valores);        
+    }
 }
-
-
