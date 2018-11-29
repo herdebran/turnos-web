@@ -80,39 +80,53 @@ class Home {
             if (isset($_POST["username"], $_POST["password"])) {
                 $db =& $this->POROTO->DB; 
                 $db->dbConnect("seguridad/login");
+                $us=$db->dbEscape($_POST["username"]);
+                $passMD5=md5($_POST["password"]);
 
                 //check pwd
-                $sql = "select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
-                $arr = $db->getSQLArray($sql);
-                if (count($arr)==1) {
-                    if (($arr[0]['password'] != md5($_POST["password"]))) {
-                        $loginErrorMessage = "Contraseña errónea";
-
-                        $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
-
-                        include($this->POROTO->ViewPath . "/-login.php");
-                        exit();
-                    }
-                } else {
-                    $loginErrorMessage = "Usuario inválido o deshabilitado";
-
-                    $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
+                //$sql = "select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
+                //$arr = $db->getSQLArray($sql);
+//                if (count($arr)==1) {
+//                    if (($arr[0]['password'] != md5($_POST["password"]))) {
+//                        $loginErrorMessage = "Contraseña errónea";
+//
+//                        $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
+//
+//                        include($this->POROTO->ViewPath . "/-login.php");
+//                        exit();
+//                    }
+//                } else {
+//                    $loginErrorMessage = "Usuario inválido o deshabilitado";
+//
+//                    $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
+//
+//                    include($this->POROTO->ViewPath . "/-login.php");
+//                    exit();
+//                }
+                
+                $logueo=$this->obtenerArrayLogueo($us,$passMD5);
+                if (!$logueo["ok"]) {
+                    $loginErrorMessage =$logueo["message"];
+                    $this->guardarAccesoUsuario(null,$us,$passMD5,$remoteIP,$navegador,$logueo["message"]);
 
                     include($this->POROTO->ViewPath . "/-login.php");
                     exit();
+                   
+                } else {
+                    $usuario=$logueo["usuario"];
                 }
-
-                $sql = "SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario, ";
-                $sql.= " p.email, u.estado, u.primeracceso";
-                $sql.= " FROM persona p inner join usuario u on p.idpersona=u.idpersona";
-                $sql.= " where p.idpersona=" . $arr[0]['idpersona'];
-                $arrUserData = $db->getSQLArray($sql);
+                
+//                $sql = "SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario, ";
+//                $sql.= " p.email, u.estado, u.primeracceso";
+//                $sql.= " FROM persona p inner join usuario u on p.idpersona=u.idpersona";
+//                $sql.= " where p.idpersona=" . $arr[0]['idpersona'];
+//                $arrUserData = $db->getSQLArray($sql);
 
                 //si tiene mas de un rol, levanto el primero
-                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $arr[0]['idpersona'] . " order by 1";
+                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
                 $arrUserRoles = $db->getSQLArray($sql);
 
-                if (count($arrUserRoles) == 0 || count($arrUserData) == 0) {
+                if (count($arrUserRoles) == 0 ) {
                             $db->dbDisconnect();
                             $loginErrorMessage = "user misconfigured. contact administrator";
                             include($this->POROTO->ViewPath . "/-login.php");
@@ -120,20 +134,18 @@ class Home {
                 }
 
                     //start session
-                $this->POROTO->Session->startSession($arrUserData[0]['idpersona'],$arrUserData[0]['apellido'],$arrUserData[0]['nombre'],$arrUserData[0]['usuario'],$arrUserData[0]['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
+                $this->POROTO->Session->startSession($usuario['idpersona'],$usuario['apellido'],$usuario['nombre'],$usuario['usuario'],$usuario['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
 
                 //update last login stamp
-                $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  ".$arr[0]['idpersona'].",CURRENT_TIMESTAMP,'".$_POST["username"]."','". md5($_POST["password"])."','".$remoteIP."','".$navegador."','Acceso concedido'";
+                $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  ".$usuario['idpersona'].",CURRENT_TIMESTAMP,'".$_POST["username"]."','". md5($_POST["password"])."','".$remoteIP."','".$navegador."','Acceso concedido'";
                 $db->insert($sql);
-                //$sql = "insert into usuarioaccesos (idpersona,fecha) select " . $arr[0]['idpersona'] . ",CURRENT_TIMESTAMP";
-                //$db->insert($sql);
 
 
-                if ($arr[0]['primeracceso'] == 1) {
+                if ($usuario['primeracceso'] == 1) {
                             $db->dbDisconnect();
                     header("Location: /primeracceso", TRUE, 302);
                 } else { 
-                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $arrUserData[0]['idpersona'];
+                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'];
                     $arr = $db->getSQLArray($sql);
                     $db->dbDisconnect();
                     if (count($arr)>1) {
@@ -152,7 +164,7 @@ class Home {
                         $sql.=" union all ";
                         $sql.="select p.idpermiso,pe.nombre as nombre from personapermiso p ";
                         $sql.="inner join permiso pe on p.idpermiso=pe.idpermiso ";
-                        $sql.="where p.idpersona= ".$arrUserData[0]['idpersona'];
+                        $sql.="where p.idpersona= ".$usuario['idpersona'];
                         $sql.=" order by nombre ";
 
                         $result = $db->getSQLArray($sql);
@@ -348,5 +360,26 @@ class Home {
         $valores["navegador"]=$navegador;
         $valores["estado"]=$estado;
         $this->usuario->persistirAccesoUsuario($valores);        
+    }
+    
+    function obtenerArrayLogueo($username,$passMD5){
+        
+        $usuario=$this->usuario->getUsuarioByUsername($username);
+        
+        if ($usuario) {
+            if ($usuario['password'] != $passMD5) {
+                $loginErrorMessage = "Contraseña errónea";
+                $ok = false;
+            } else {
+                //Logueo exitoso
+                $loginErrorMessage = "";
+                $ok = true;
+            }
+        } else {
+            $loginErrorMessage = "Usuario inválido o deshabilitado";
+            $ok = false;
+        }
+        
+        return array("ok" => $ok, "message" => $loginErrorMessage,"usuario" => $usuario);
     }
 }

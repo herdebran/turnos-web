@@ -79,4 +79,20 @@ class ModeloUsuario {
         }
     }
     
+    /**
+     * Dado el nombre de usuario devuelve sus datos siempre y cuando esté activo como persona y usuario.
+     * @param type $username
+     * @return type
+     */
+    public function getUsuarioByUsername($username) {
+        $sql = "select p.idpersona,p.documentonro, p.apellido, p.nombre, p.estado, "
+            . "u.usuario,u.password,p.email, u.estado, u.primeracceso "
+            . "from usuario u inner join persona p on p.idpersona=u.idpersona "
+            . "where u.usuario=:username AND u.estado=1 AND p.estado=1";
+        $params = array(":username" => $username);
+        $this->PDO->execute($sql, "ModeloUsuario/getUsuarioByIdPersona", $params);
+        $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 }
