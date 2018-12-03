@@ -82,27 +82,6 @@ class Home {
                 $db->dbConnect("seguridad/login");
                 $us=$db->dbEscape($_POST["username"]);
                 $passMD5=md5($_POST["password"]);
-
-                //check pwd
-                //$sql = "select p.idpersona, p.documentonro, u.password, u.primeracceso from usuario u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
-                //$arr = $db->getSQLArray($sql);
-//                if (count($arr)==1) {
-//                    if (($arr[0]['password'] != md5($_POST["password"]))) {
-//                        $loginErrorMessage = "Contraseña errónea";
-//
-//                        $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
-//
-//                        include($this->POROTO->ViewPath . "/-login.php");
-//                        exit();
-//                    }
-//                } else {
-//                    $loginErrorMessage = "Usuario inválido o deshabilitado";
-//
-//                    $this->guardarAccesoUsuario(null,$_POST["username"],md5($_POST["password"]),$remoteIP,$navegador,$loginErrorMessage);
-//
-//                    include($this->POROTO->ViewPath . "/-login.php");
-//                    exit();
-//                }
                 
                 $logueo=$this->obtenerArrayLogueo($us,$passMD5);
                 if (!$logueo["ok"]) {
@@ -116,14 +95,8 @@ class Home {
                     $usuario=$logueo["usuario"];
                 }
                 
-//                $sql = "SELECT p.idpersona, p.apellido, p.nombre, p.estado, u.usuario, ";
-//                $sql.= " p.email, u.estado, u.primeracceso";
-//                $sql.= " FROM persona p inner join usuario u on p.idpersona=u.idpersona";
-//                $sql.= " where p.idpersona=" . $arr[0]['idpersona'];
-//                $arrUserData = $db->getSQLArray($sql);
-
                 //si tiene mas de un rol, levanto el primero
-                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
+                $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
                 $arrUserRoles = $db->getSQLArray($sql);
 
                 if (count($arrUserRoles) == 0 ) {
@@ -133,12 +106,12 @@ class Home {
                             exit();
                 }
 
-                    //start session
+                //start session
                 $this->POROTO->Session->startSession($usuario['idpersona'],$usuario['apellido'],$usuario['nombre'],$usuario['usuario'],$usuario['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
 
                 //update last login stamp
-                $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) select  ".$usuario['idpersona'].",CURRENT_TIMESTAMP,'".$_POST["username"]."','". md5($_POST["password"])."','".$remoteIP."','".$navegador."','Acceso concedido'";
-                $db->insert($sql);
+                $this->guardarAccesoUsuario($usuario['idpersona'],$us,$passMD5,$remoteIP,$navegador,"Acceso concedido");
+
 
 
                 if ($usuario['primeracceso'] == 1) {
@@ -178,7 +151,7 @@ class Home {
                         $result = $db->getSQLArray($sql);
                         $ses->clearConfiguracion();
                         foreach ($result as $conf) {
-                                    $ses->agregarConfiguracion($conf["parametro"],$conf["valor"]);
+                            $ses->agregarConfiguracion($conf["parametro"],$conf["valor"]);
                         }
                         //Fin Cambio 20180222
 
