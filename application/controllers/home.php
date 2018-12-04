@@ -45,24 +45,23 @@ class Home {
 
         if(isset($_POST["olvide"],$_POST["username"]) and $_POST["olvide"] == "si"){
             $db =& $this->POROTO->DB; 
-            $db->dbConnect("seguridad/login");
-            $sql = " select p.idpersona, p.apellido,p.nombre,p.documentonro,u.usuario, u.password, u.primeracceso,u.email from usuario ";
-            $sql.= " u inner join persona p on p.idpersona=u.idpersona where u.usuario='" . $db->dbEscape($_POST["username"]) . "' AND u.estado=1 AND p.estado=1";
-            $arr = $db->getSQLArray($sql);
-            if (count($arr)==1) {
+            $db->dbConnect("home/login");
+            $arr=$this->usuario->getUsuarioByUsername($db->dbEscape($_POST["username"]));
+
+            if ($arr) {
                 //Envio el mail
-                $dataEMail=$arr[0]["email"];
+                $dataEMail=$arr["email"];
                 if ($this->POROTO->Config['override_mail_address'] != "") $mailto = $this->POROTO->Config['override_mail_address']; else $mailto = $dataEMail;
                 $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Recuperar Contraseña";
-                $mailBody = "Estimado/a " . trim($arr[0]["nombre"]) . " ". trim($arr[0]["apellido"]) . ", le enviamos los datos ";
+                $mailBody = "Estimado/a " . trim($arr["nombre"]) . " ". trim($arr["apellido"]) . ", le enviamos los datos ";
                 $mailBody.= "para acceder al sitio.<br>";
-                $mailBody.= "Usuario: ". trim($arr[0]["usuario"])."<br>";
-                $mailBody.= "Contraseña: ".trim($arr[0]["password"]);                    
+                $mailBody.= "Usuario: ". trim($arr["usuario"])."<br>";
+                $mailBody.= "Contraseña: ".trim($arr["password"]);                    
                 $lib->sendMail($mailto, $mailSubject, $mailBody);
                 //Logueo
                 $loginErrorMessage = "Olvide mi contraseña";
                 $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) ";
-                $sql.= "select ".$arr[0]["idpersona"].",CURRENT_TIMESTAMP,'".$_POST["username"]."',null,'".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
+                $sql.= "select ".$arr["idpersona"].",CURRENT_TIMESTAMP,'".$_POST["username"]."',null,'".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
                 $db->insert($sql);
                 $loginErrorMessage = "Se ha enviado la contraseña al correo ".$dataEMail;
             }else
@@ -79,7 +78,7 @@ class Home {
 
             if (isset($_POST["username"], $_POST["password"])) {
                 $db =& $this->POROTO->DB; 
-                $db->dbConnect("seguridad/login");
+                $db->dbConnect("home/login");
                 $us=$db->dbEscape($_POST["username"]);
                 $passMD5=md5($_POST["password"]);
                 
@@ -96,14 +95,14 @@ class Home {
                 }
                 
                 //si tiene mas de un rol, levanto el primero
-                $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
-                $arrUserRoles = $db->getSQLArray($sql);
+                //$sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
+                $arrUserRoles = $this->usuario->obtenerRolesByPersonaId($usuario['idpersona']);
 
                 if (count($arrUserRoles) == 0 ) {
-                            $db->dbDisconnect();
-                            $loginErrorMessage = "user misconfigured. contact administrator";
-                            include($this->POROTO->ViewPath . "/-login.php");
-                            exit();
+                    $db->dbDisconnect();
+                    $loginErrorMessage = "Usuario mal configurado sin roles. contacte administrador";
+                    include($this->POROTO->ViewPath . "/-login.php");
+                    exit();
                 }
 
                 //start session
@@ -118,32 +117,23 @@ class Home {
                             $db->dbDisconnect();
                     header("Location: /primeracceso", TRUE, 302);
                 } else { 
-                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'];
-                    $arr = $db->getSQLArray($sql);
+//                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'];
+//                    $arr = $db->getSQLArray($sql);
                     $db->dbDisconnect();
-                    if (count($arr)>1) {
+                    if (count($arrUserRoles)>1) {
                         header("Location: /pickrole", TRUE, 302);
                             //OJO aca revisar porque al entrar por aca no esta entrando a verificar 
                             //los permisos y guardarlos en la sesion.
                     } else {
                         //Asignar permisos
-                        $db->dbConnect("seguridad/login");
+                        $db->dbConnect("home/login");
                         $ses =& $this->POROTO->Session;
-                        $idRol=$arr[0]['idrol'];
+                        $idRol=$arrUserRoles[0]['idrol'];
 
-                        $sql= "select p.idpermiso,p.nombre as nombre ";
-                        $sql.="from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso ";
-                        $sql.="where pr.idRol=".$idRol;	
-                        $sql.=" union all ";
-                        $sql.="select p.idpermiso,pe.nombre as nombre from personapermiso p ";
-                        $sql.="inner join permiso pe on p.idpermiso=pe.idpermiso ";
-                        $sql.="where p.idpersona= ".$usuario['idpersona'];
-                        $sql.=" order by nombre ";
-
-                        $result = $db->getSQLArray($sql);
+                        $result=$this->usuario->obtenerPermisos($idRol, $usuario['idpersona']);
                         $ses->clearPermisos(); //Cambio 65 Leo 20171025
                         foreach ($result as $permiso) {
-                                        $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
+                            $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
                         }
 
                         //Cambio 20180222
@@ -276,51 +266,6 @@ class Home {
             }
     }
 
-    public function ajaxsendmail() {
-        $lib = & $this->POROTO->Libraries['siteLibrary'];
-                
-        $db = & $this->POROTO->DB;
-        $idComision = $_POST["co"];
-        $idCarrera = $_POST["ca"];
-        $idPersona = $_POST["pe"];
-        $idRol = $_POST["ro"];
-            
-        $db->dbConnect("home/ajaxsendmail/" . $idComision . "/" . $idPersona . "/" . $idRol);
-
-        $sql = "select p.email  from alumnomateria am ";
-        $sql .= "inner join estadoalumnomateria eam on am.idestadoalumnomateria=eam.idestadoalumnomateria ";
-        $sql .= "inner join comisiones c on c.idmateria=am.idmateria and c.idcomision=am.idcomision ";
-        $sql .= "inner join usuarios p on am.idpersona = p.idpersona ";
-        $sql .= "left join alumnomaterianota amn on amn.idalumnomateria = am.idalumnomateria and amn.idtipoexamen in (3,4) ";
-        $sql .= "left join alumnocarrera ac on ac.idpersona=p.idpersona and ac.idcarrera= 5 ";
-        $sql .= "left join instrumentos i on ac.idinstrumento=i.idinstrumento ";
-        $sql .= "where c.idcomision=" . $idComision;
-        $result = $db->getSQLArray($sql);
-        $db->dbDisconnect();
-        
-        $mailto = "";
-        
-        foreach ($result as $anEmail => $email)
-        {
-            $mailto = $mailto . $email["email"].",";
-        }
-             
-        if ($this->POROTO->Config["override_mail_address"] != "") 
-             { $mailto = $this->POROTO->Config["override_mail_address"]; }
-           
-        $mailBody = $_POST["body"];
-        $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Notificacion Comisiones";
-        $mailto = $mailto.",".$_POST["sentoadd"];
-        try
-        {
-            $lib->sendMail($mailto, $mailSubject, $mailBody);    
-            $response = array ("msj" => "Correo enviado");
-            echo json_encode($response);
-        } catch (Exception $e ){
-            $response = array ("msj" => "Error al enviar el correo: " . $e);
-            echo json_encode($response);
-        }   
-    }
     /**
      * Arma un array y llama al modelo para persistir el acceso
      */

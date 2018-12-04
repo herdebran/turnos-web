@@ -3,10 +3,13 @@
 class seguridad {
 
     private $POROTO;
+    private $usuario;
 
     function __construct($poroto) {
         $this->POROTO = $poroto;
         $this->POROTO->pageHeader[] = array("label" => "Dashboard", "url" => "");
+        include($this->POROTO->ModelPath . '/usuario.php');
+        $this->usuario = new ModeloUsuario($this->POROTO);
     }
 
     function defentry() {
@@ -23,44 +26,33 @@ class seguridad {
         $ses = & $this->POROTO->Session;
 
         if (isset($_POST["role"])) {
-            $sql = "select pr.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona() . " and pr.idrol=" . $db->dbEscape($_POST['role']);
+            $sql = "select pr.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona() . " and pr.idrol=" . $db->dbEscape($_POST['role']);
             $arr = $db->getSQLArray($sql);
 
             if (count($arr) != 1) {
                 header("Location: /", TRUE, 302);
             } else {
                 $ses->setRole($arr[0]['idrol'], $arr[0]['nombre']);
-                //Cambio Leo 20170706 Leo
+
                 //Asignar permisos
                 $idRol = $arr[0]['idrol'];
 
-                $sql = "select p.idpermiso,p.nombre as nombre ";
-                $sql .= "from permisosroles pr inner join permisos p on pr.idpermiso=p.idpermiso ";
-                $sql .= "where pr.idRol=" . $idRol;
-                $sql .= " union all ";
-                $sql .= "select p.idpermiso,pe.nombre as nombre from personapermisos p ";
-                $sql .= "inner join permisos pe on p.idpermiso=pe.idpermiso ";
-                $sql .= "where p.idpersona= " . $ses->getIdPersona();
-                $sql .= " order by nombre ";
-
-                $result = $db->getSQLArray($sql);
+                $result=$this->usuario->obtenerPermisos($idRol,$ses->getIdPersona());
                 $ses->clearPermisos(); //Cambio 65 Leo 20171025
                 foreach ($result as $permiso) {
                     $ses->agregarPermiso($permiso["idpermiso"], $permiso["nombre"]);
                 }
-                //Fin Cambio Leo 20170706 Leo
-                //Cambio 20180222
+
                 $sql = "select parametro,valor from configuracion order by orden";
                 $result = $db->getSQLArray($sql);
                 $ses->clearConfiguracion();
                 foreach ($result as $conf) {
                     $ses->agregarConfiguracion($conf["parametro"], $conf["valor"]);
                 }
-                //Fin Cambio 20180222
             }
             header("Location: /", TRUE, 302);
         } else {
-            $sql = "select r.idrol, r.nombre from personarol pr inner join roles r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona();
+            $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona();
             $viewDataRoles = $db->getSQLArray($sql);
             include($this->POROTO->ViewPath . "/-pick-role.php");
         }

@@ -51,3 +51,13 @@ $config['log_sql_filename'] = 'sql-log-'.date('Ymd').'.txt';
 
 //Local en cada PC  
 $config['base_url'] = 'http://localhost/';
+
+//Para envio de mails (olvide mi pass)
+$config['path_to_mail_template'] = 'template_olvide.html';
+$config['mail_title_replace_string'] = '%%MAIL-TITLE%%';
+$config['mail_body_replace_string'] = '%%MAIL-BODY%%';
+$config['override_mail_address'] = 'hernanmarzullo@gmail.com';
+$config['smtp_server_phpmailer'] = 'mail.consaguirre.edu.ar';
+$config['smtp_mail_from'] = 'sistema@consaguirre.com.ar';
+$config['smtp_mail_from_name'] = 'Turnos';
+$config['carbon_copy_mail_address'] = '';

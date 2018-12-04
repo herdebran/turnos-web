@@ -94,5 +94,39 @@ class ModeloUsuario {
         $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function obtenerRolesByPersonaId($idpersona) {
+        $sql = "select r.idrol, r.nombre "
+                . "from personarol pr "
+                . "inner join rol r on pr.idrol=r.idrol "
+                . "where pr.idpersona=:idpersona order by 1";
+        $params = array(":idpersona" => $idpersona);
+        $this->PDO->execute($sql, "ModeloUsuario/obtenerRolesByPersonaId", $params);
+        $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    
+    /**
+     * Dado un id de rol y un id de persona devuelve la lista de permisos
+     * @param type $idrol
+     * @param type $idpersona
+     * @return type
+     */
+    public function obtenerPermisos($idrol,$idpersona){
+        $sql= "select p.idpermiso,p.nombre as nombre ";
+        $sql.="from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso ";
+        $sql.="where pr.idRol=:idrol";	
+        $sql.=" union all ";
+        $sql.="select p.idpermiso,pe.nombre as nombre from personapermiso p ";
+        $sql.="inner join permiso pe on p.idpermiso=pe.idpermiso ";
+        $sql.="where p.idpersona=:idpersona ";
+        $sql.=" order by nombre ";
 
+        $params = array(
+            ":idrol" => $idrol,
+            ":idpersona" => $idpersona);
+        $this->PDO->execute($sql, "ModeloUsuario/obtenerPermisos", $params);
+        $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
