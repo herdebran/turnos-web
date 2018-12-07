@@ -129,4 +129,25 @@ class ModeloUsuario {
         $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function resetearPassUsuario($username,$nuevapassMD5) {
+        $nombreCaller='ModeloUsuario/resetearPassUsuario';
+        $this->PDO->beginTransaction($nombreCaller);
+        try {
+            $sql = "update usuario set password=:password, primeracceso=1 "
+                . "where usuario=:usuario ";
+            $params = array(":password" => $nuevapassMD5,
+                ":usuario" => $username);
+        
+            $this->PDO->execute($sql, $nombreCaller, $params);
+            $this->PDO->commitTransaction($nombreCaller);
+            return array("ok" => true, "message" => "Se actualizo password satisfactoriamente.");
+        }  catch (Exception $e) {
+            //Rollback the transaction.
+            $this->PDO->rollbackTransaction($nombreCaller . $e->getMessage());
+            return array("ok" => false, "message" => "Error al actualizar password.");
+        }        
+        
+    }
+    
 }

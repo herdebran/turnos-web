@@ -577,9 +577,13 @@ class siteLibrary {
 	}
 
 	public function sendMail ($to, $title, $body) {
-		ini_set('SMTP', $this->POROTO->Config['smtp_server_phpmailer']);  //OJO aca se cambio este mail por el smtp_server_address
+		ini_set('SMTP', $this->POROTO->Config['smtp_server_host']); 
 		ini_set('sendmail_from', $this->POROTO->Config['smtp_mail_from']);
-		$template = file_get_contents($this->POROTO->MailPath . $this->POROTO->Config['path_to_mail_template']);
+                ini_set('smtp_port',$this->POROTO->Config['smtp_mail_port']);
+                ini_set('username',$this->POROTO->Config['smtp_mail_username']);
+                ini_set('password',$this->POROTO->Config['smtp_mail_password']);
+                
+                $template = file_get_contents($this->POROTO->MailPath . $this->POROTO->Config['path_to_mail_template']);
 		$template = str_replace($this->POROTO->Config['mail_title_replace_string'], $title, $template);
 		$template = str_replace($this->POROTO->Config['mail_body_replace_string'], $body, $template);
 		$email = wordwrap($template, 70, "\r\n"); 
@@ -591,5 +595,55 @@ class siteLibrary {
 		if ($this->POROTO->Config['carbon_copy_mail_address'] != "") $headers[] = "Bcc: " . $this->POROTO->Config['carbon_copy_mail_address'];
 		return (mail($to, $title, $email, implode("\r\n", $headers)));
 	}
+        
+        /**
+         * Envio de mail con autenticacion TLS
+         * @param type $to
+         * @param type $title
+         * @param type $body
+         */
+        public function sendMailSecure($to, $title, $body) {
+            require_once('class.phpmailer.php');
+
+            $mail = new PHPMailer();
+            $mail->IsSMTP();                       // telling the class to use SMTP
+            $mail->SMTPDebug = 0;  // 0 = no output, 1 = errors and messages, 2 = messages only.
+
+            $mail->SMTPAuth = true;        // enable SMTP authentication 
+            $mail->SMTPSecure = "tls";    // sets the prefix to the servier
+            $mail->Host = $this->POROTO->Config['smtp_server_host'];
+            $mail->Port = $this->POROTO->Config['smtp_mail_port']; // set the SMTP port for the GMAIL 
+
+            $mail->Username = $this->POROTO->Config['smtp_mail_username'];
+            $mail->Password = $this->POROTO->Config['smtp_mail_password'];
+
+            //$mail->CharSet = 'windows-1250';
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'quoted-printable';
+            $mail->SetFrom ($this->POROTO->Config['smtp_mail_from'],$this->POROTO->Config['smtp_mail_from_name']);
+            $mail->Subject = $title;
+            $mail->ContentType = 'text/html'; //'text/plain'; 
+            $mail->IsHTML(true);
+
+            $template = file_get_contents($this->POROTO->MailPath . $this->POROTO->Config['path_to_mail_template']);
+            $template = str_replace($this->POROTO->Config['mail_title_replace_string'], $title, $template);
+            $template = str_replace($this->POROTO->Config['mail_body_replace_string'], $body, $template);
+            $email = wordwrap($template, 70, "\r\n");             
+            
+            $mail->Body = $email; 
+            $mail->AddAddress ($to); 
+
+            //Si hubiera, agregamos BCC
+            if ($this->POROTO->Config['carbon_copy_mail_address'] != "")
+                $mail->AddBCC($this->POROTO->Config['carbon_copy_mail_address']);
+
+
+            if(!$mail->Send()) 
+                $error_message = "Mailer Error: " . $mail->ErrorInfo;
+            else 
+                $error_message = "Successfully sent!";
+            
+            
+        }
 
 }

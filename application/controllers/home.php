@@ -40,37 +40,11 @@ class Home {
     function login() { //OK ojo si sacamos del home ver sitelibrary.
         $navegador = substr($_SERVER['HTTP_USER_AGENT'],0,40);
         $remoteIP=$_SERVER['REMOTE_ADDR'];
-        $lib =& $this->POROTO->Libraries['siteLibrary'];
+
         //Cambio 20180224 Para olvide mi contraseña
 
         if(isset($_POST["olvide"],$_POST["username"]) and $_POST["olvide"] == "si"){
-            $db =& $this->POROTO->DB; 
-            $db->dbConnect("home/login");
-            $arr=$this->usuario->getUsuarioByUsername($db->dbEscape($_POST["username"]));
-
-            if ($arr) {
-                //Envio el mail
-                $dataEMail=$arr["email"];
-                if ($this->POROTO->Config['override_mail_address'] != "") $mailto = $this->POROTO->Config['override_mail_address']; else $mailto = $dataEMail;
-                $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Recuperar Contraseña";
-                $mailBody = "Estimado/a " . trim($arr["nombre"]) . " ". trim($arr["apellido"]) . ", le enviamos los datos ";
-                $mailBody.= "para acceder al sitio.<br>";
-                $mailBody.= "Usuario: ". trim($arr["usuario"])."<br>";
-                $mailBody.= "Contraseña: ".trim($arr["password"]);                    
-                $lib->sendMail($mailto, $mailSubject, $mailBody);
-                //Logueo
-                $loginErrorMessage = "Olvide mi contraseña";
-                $sql = "insert into usuarioaccesos (idpersona,fecha,usuario,contraseña,ip,navegador,estado) ";
-                $sql.= "select ".$arr["idpersona"].",CURRENT_TIMESTAMP,'".$_POST["username"]."',null,'".$remoteIP."','".$navegador."','".$loginErrorMessage."'";
-                $db->insert($sql);
-                $loginErrorMessage = "Se ha enviado la contraseña al correo ".$dataEMail;
-            }else
-            {
-                $loginErrorMessage = "Contactese con administración. Su usuario no existe o esta deshabilitado.";
-            }
-            $db->dbDisconnect();
-            include($this->POROTO->ViewPath . "/-login.php");
-            exit();
+            $this->olvideMiContrasena($_POST["username"],$remoteIP,$navegador);
         }
         //Fin Cambio 20180224 Para olvide mi contraseña
 
@@ -299,5 +273,59 @@ class Home {
         }
         
         return array("ok" => $ok, "message" => $loginErrorMessage,"usuario" => $usuario);
+    }
+    
+    /**
+     * resetea la password del usuario $username y envia mail al correo de la persona
+     * @param type $username
+     */
+    function olvideMiContrasena($username,$remoteIP,$navegador) {
+        $lib =& $this->POROTO->Libraries['siteLibrary'];
+        $db =& $this->POROTO->DB; 
+        $db->dbConnect("home/login");
+        $username=$db->dbEscape($username);
+        $arr=$this->usuario->getUsuarioByUsername($username);
+
+        if ($arr) {
+            //Reseteo Password
+            $nuevaPass= $this->resetearPassword($username);
+            //Envio el mail
+            $dataEMail=$arr["email"];
+            if ($this->POROTO->Config['override_mail_address'] != "") $mailto = $this->POROTO->Config['override_mail_address']; else $mailto = $dataEMail;
+            $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Recuperar Contraseña";
+            $mailBody = "Estimado/a " . trim($arr["nombre"]) . " ". trim($arr["apellido"]) . ", le enviamos los datos ";
+            $mailBody.= "para acceder al sitio.<br>";
+            $mailBody.= "Usuario: ". trim($arr["usuario"])."<br>";
+            $mailBody.= "Contraseña: ".trim($arr["password"]);                    
+            $lib->sendMailSecure($mailto, $mailSubject, $mailBody);
+
+            //Logueo acceso
+            $this->guardarAccesoUsuario($arr["idpersona"],$username,null,$remoteIP,$navegador,'Olvide mi contraseña');
+
+            $loginErrorMessage = "Se ha enviado la contraseña al correo ".$dataEMail;
+        }else {
+            $loginErrorMessage = "Contactese con administración. Su usuario no existe o esta deshabilitado.";
+        }
+        $db->dbDisconnect();
+        include($this->POROTO->ViewPath . "/-login.php");
+        exit();
+
+    }
+    
+    /** 
+     * Resetea la password del usuario enviado. Devuelve la nueva pass.
+     * @param type $username
+     */
+    function resetearPassword($username){
+        $nuevaPass='1234567890*'; //En un futuro reemplazar por un generador aleatorio.
+        
+        $res=$this->usuario->resetearPassUsuario($username, md5($nuevaPass));
+        if ($res["ok"]) {
+            //Cambio ok, devuelvo la nueva Pass sin MD5 para enviar por mail
+            array("ok" => true, "message" => $nuevaPass);
+        } else {
+            //Cambio ok, devuelvo la nueva Pass sin MD5 para enviar por mail
+            array("ok" => false, "message" => "");
+        }
     }
 }
