@@ -41,94 +41,85 @@ class Home {
         $navegador = substr($_SERVER['HTTP_USER_AGENT'],0,40);
         $remoteIP=$_SERVER['REMOTE_ADDR'];
 
-        //Cambio 20180224 Para olvide mi contraseña
-
         if(isset($_POST["olvide"],$_POST["username"]) and $_POST["olvide"] == "si"){
             $this->olvideMiContrasena($_POST["username"],$remoteIP,$navegador);
         }
-        //Fin Cambio 20180224 Para olvide mi contraseña
 
+        if (isset($_POST["username"], $_POST["password"])) {
+            $db =& $this->POROTO->DB; 
+            $db->dbConnect("home/login");
+            $us=$db->dbEscape($_POST["username"]);
+            $passMD5=md5($_POST["password"]);
 
+            $logueo=$this->obtenerArrayLogueo($us,$passMD5);
+            if (!$logueo["ok"]) {
+                $loginErrorMessage =$logueo["message"];
+                $this->guardarAccesoUsuario(null,$us,$passMD5,$remoteIP,$navegador,$logueo["message"]);
 
-            if (isset($_POST["username"], $_POST["password"])) {
-                $db =& $this->POROTO->DB; 
-                $db->dbConnect("home/login");
-                $us=$db->dbEscape($_POST["username"]);
-                $passMD5=md5($_POST["password"]);
-                
-                $logueo=$this->obtenerArrayLogueo($us,$passMD5);
-                if (!$logueo["ok"]) {
-                    $loginErrorMessage =$logueo["message"];
-                    $this->guardarAccesoUsuario(null,$us,$passMD5,$remoteIP,$navegador,$logueo["message"]);
-
-                    include($this->POROTO->ViewPath . "/-login.php");
-                    exit();
-                   
-                } else {
-                    $usuario=$logueo["usuario"];
-                }
-                
-                //si tiene mas de un rol, levanto el primero
-                //$sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
-                $arrUserRoles = $this->usuario->obtenerRolesByPersonaId($usuario['idpersona']);
-
-                if (count($arrUserRoles) == 0 ) {
-                    $db->dbDisconnect();
-                    $loginErrorMessage = "Usuario mal configurado sin roles. contacte administrador";
-                    include($this->POROTO->ViewPath . "/-login.php");
-                    exit();
-                }
-
-                //start session
-                $this->POROTO->Session->startSession($usuario['idpersona'],$usuario['apellido'],$usuario['nombre'],$usuario['usuario'],$usuario['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
-
-                //update last login stamp
-                $this->guardarAccesoUsuario($usuario['idpersona'],$us,$passMD5,$remoteIP,$navegador,"Acceso concedido");
-
-
-
-                if ($usuario['primeracceso'] == 1) {
-                            $db->dbDisconnect();
-                    header("Location: /primeracceso", TRUE, 302);
-                } else { 
-//                    $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'];
-//                    $arr = $db->getSQLArray($sql);
-                    $db->dbDisconnect();
-                    if (count($arrUserRoles)>1) {
-                        header("Location: /pickrole", TRUE, 302);
-                            //OJO aca revisar porque al entrar por aca no esta entrando a verificar 
-                            //los permisos y guardarlos en la sesion.
-                    } else {
-                        //Asignar permisos
-                        $db->dbConnect("home/login");
-                        $ses =& $this->POROTO->Session;
-                        $idRol=$arrUserRoles[0]['idrol'];
-
-                        $result=$this->usuario->obtenerPermisos($idRol, $usuario['idpersona']);
-                        $ses->clearPermisos(); //Cambio 65 Leo 20171025
-                        foreach ($result as $permiso) {
-                            $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
-                        }
-
-                        //Cambio 20180222
-                        $sql="select parametro,valor from configuracion order by orden";
-                        $result = $db->getSQLArray($sql);
-                        $ses->clearConfiguracion();
-                        foreach ($result as $conf) {
-                            $ses->agregarConfiguracion($conf["parametro"],$conf["valor"]);
-                        }
-                        //Fin Cambio 20180222
-
-                        $db->dbDisconnect();
-                        //Fin Cambio Leo 20170706 Leo
-
-                        header("Location: /", TRUE, 302);
-                    }
-            }
+                include($this->POROTO->ViewPath . "/-login.php");
+                exit();
 
             } else {
-                include($this->POROTO->ViewPath . "/-login.php");
+                $usuario=$logueo["usuario"];
             }
+
+            //si tiene mas de un rol, levanto el primero
+            //$sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $usuario['idpersona'] . " order by 1";
+            $arrUserRoles = $this->usuario->obtenerRolesByPersonaId($usuario['idpersona']);
+
+            if (count($arrUserRoles) == 0 ) {
+                $db->dbDisconnect();
+                $loginErrorMessage = "Usuario mal configurado sin roles. contacte administrador";
+                include($this->POROTO->ViewPath . "/-login.php");
+                exit();
+            }
+
+            //start session
+            $this->POROTO->Session->startSession($usuario['idpersona'],$usuario['apellido'],$usuario['nombre'],$usuario['usuario'],$usuario['email'], $arrUserRoles[0]['idrol'], $arrUserRoles[0]['nombre']);
+
+            //update last login stamp
+            $this->guardarAccesoUsuario($usuario['idpersona'],$us,$passMD5,$remoteIP,$navegador,"Acceso concedido");
+
+
+
+            if ($usuario['primeracceso'] == 1) {
+                $db->dbDisconnect();
+                header("Location: /primeracceso", TRUE, 302);
+            } else { 
+                $db->dbDisconnect();
+                if (count($arrUserRoles)>1) {
+                    header("Location: /pickrole", TRUE, 302);
+                } else {
+                    //Asignar permisos
+                    $db->dbConnect("home/login");
+                    $ses =& $this->POROTO->Session;
+                    $idRol=$arrUserRoles[0]['idrol'];
+
+                    $result=$this->usuario->obtenerPermisos($idRol, $usuario['idpersona']);
+                    $ses->clearPermisos(); //Cambio 65 Leo 20171025
+                    foreach ($result as $permiso) {
+                        $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
+                    }
+
+                    //Cambio 20180222
+                    $sql="select parametro,valor from configuracion order by orden";
+                    $result = $db->getSQLArray($sql);
+                    $ses->clearConfiguracion();
+                    foreach ($result as $conf) {
+                        $ses->agregarConfiguracion($conf["parametro"],$conf["valor"]);
+                    }
+                    //Fin Cambio 20180222
+
+                    $db->dbDisconnect();
+                    //Fin Cambio Leo 20170706 Leo
+
+                    header("Location: /", TRUE, 302);
+                }
+        }
+
+        } else {
+            include($this->POROTO->ViewPath . "/-login.php");
+        }
     }
 
     function logout() {  //OK ojo si sacamos del home ver sitelibrary.
@@ -288,16 +279,22 @@ class Home {
 
         if ($arr) {
             //Reseteo Password
-            $nuevaPass= $this->resetearPassword($username);
-            //Envio el mail
-            $dataEMail=$arr["email"];
-            if ($this->POROTO->Config['override_mail_address'] != "") $mailto = $this->POROTO->Config['override_mail_address']; else $mailto = $dataEMail;
-            $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Recuperar Contraseña";
-            $mailBody = "Estimado/a " . trim($arr["nombre"]) . " ". trim($arr["apellido"]) . ", le enviamos los datos ";
-            $mailBody.= "para acceder al sitio.<br>";
-            $mailBody.= "Usuario: ". trim($arr["usuario"])."<br>";
-            $mailBody.= "Contraseña: ".trim($arr["password"]);                    
-            $lib->sendMailSecure($mailto, $mailSubject, $mailBody);
+            $reset= $this->resetearPassword($username);
+            if ($reset("ok")){
+                //Envio el mail
+                $dataEMail=$arr["email"];
+                if ($this->POROTO->Config['override_mail_address'] != "") 
+                    $mailto = $this->POROTO->Config['override_mail_address']; 
+                else 
+                    $mailto = $dataEMail;
+                $mailSubject = $this->POROTO->Config["empresa_descripcion"]." - Recuperar Contraseña";
+                $mailBody = "Estimado/a " . trim($arr["nombre"]) . " ". trim($arr["apellido"]) . ", le enviamos los datos ";
+                $mailBody.= "para acceder al sitio.<br>";
+                $mailBody.= "Usuario: ". trim($arr["usuario"])."<br>";
+                $mailBody.= "Contraseña: ".trim($reset["message"])."<br>";                    
+                $mailBody.= "Al ingresar al sitio, le sugerimos que la cambie para mayor seguridad.";                    
+                $lib->sendMailSecure($mailto, $mailSubject, $mailBody);
+            }
 
             //Logueo acceso
             $this->guardarAccesoUsuario($arr["idpersona"],$username,null,$remoteIP,$navegador,'Olvide mi contraseña');
@@ -324,8 +321,8 @@ class Home {
             //Cambio ok, devuelvo la nueva Pass sin MD5 para enviar por mail
             array("ok" => true, "message" => $nuevaPass);
         } else {
-            //Cambio ok, devuelvo la nueva Pass sin MD5 para enviar por mail
-            array("ok" => false, "message" => "");
+            //Algún error al resetear
+            array("ok" => false, "message" => $res["message"]);
         }
     }
 }

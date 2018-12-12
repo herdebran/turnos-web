@@ -150,4 +150,17 @@ class ModeloUsuario {
         
     }
     
+    public function obtenerRolPersona($idpersona, $idrol) {
+        $sql = "select pr.idrol, r.nombre "
+                . "from personarol pr "
+                . "inner join rol r on pr.idrol=r.idrol "
+                . "where pr.idpersona=:idpersona "
+                . "and pr.idrol=:idrol";
+        
+        $params = array(":idpersona" => $idpersona,
+        $params = ":idrol" => $idrol);
+        $this->PDO->execute($sql, "ModeloUsuario/obtenerRolPersona", $params);
+        $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }    
 }

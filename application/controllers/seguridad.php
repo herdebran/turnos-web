@@ -26,16 +26,25 @@ class seguridad {
         $ses = & $this->POROTO->Session;
 
         if (isset($_POST["role"])) {
-            $sql = "select pr.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona() . " and pr.idrol=" . $db->dbEscape($_POST['role']);
-            $arr = $db->getSQLArray($sql);
+//            $sql = "select pr.idrol, r.nombre from personarol pr "
+//                    . "inner join rol r on pr.idrol=r.idrol "
+//                    . "where pr.idpersona=" . $ses->getIdPersona() 
+//                    . " and pr.idrol=" . $db->dbEscape($_POST['role']);
+//            $arr = $db->getSQLArray($sql);
 
-            if (count($arr) != 1) {
+          
+// REEMPLAZAR LA QUERY POR ESTO DE ABAJO.
+
+  $arr=$this->usuario->obtenerRolPersona($ses->getIdPersona() , $db->dbEscape($_POST['role']));
+
+
+            if (!$arr) {
                 header("Location: /", TRUE, 302);
             } else {
-                $ses->setRole($arr[0]['idrol'], $arr[0]['nombre']);
+                $ses->setRole($arr['idrol'], $arr['nombre']);
 
                 //Asignar permisos
-                $idRol = $arr[0]['idrol'];
+                $idRol = $arr['idrol'];
 
                 $result=$this->usuario->obtenerPermisos($idRol,$ses->getIdPersona());
                 $ses->clearPermisos(); //Cambio 65 Leo 20171025
@@ -52,8 +61,11 @@ class seguridad {
             }
             header("Location: /", TRUE, 302);
         } else {
-            $sql = "select r.idrol, r.nombre from personarol pr inner join rol r on pr.idrol=r.idrol where pr.idpersona=" . $ses->getIdPersona();
-            $viewDataRoles = $db->getSQLArray($sql);
+//            $sql = "select r.idrol, r.nombre from personarol pr"
+//                    . " inner join rol r on pr.idrol=r.idrol "
+//                    . "where pr.idpersona=" . $ses->getIdPersona();
+//            $viewDataRoles = $db->getSQLArray($sql);
+            $viewDataRoles=$this->usuario->obtenerRolesByPersonaId($ses->getIdPersona());
             include($this->POROTO->ViewPath . "/-pick-role.php");
         }
         $db->dbDisconnect();
