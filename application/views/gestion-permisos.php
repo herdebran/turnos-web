@@ -198,7 +198,7 @@
             if (btn.is("span")) {
                 btn = $(btn.parent());
             }
-            var ok = confirm("Seguro que desea resetear la contraseña del usuario?");
+            var ok = confirm("¿Está seguro que desea resetear la contraseña del usuario? id:" + btn.data("persona"));
             if (ok) {
                 var idpersona = btn.data("persona");
                 $(location).attr('href', '/permisos/resetpass/' + idpersona);
