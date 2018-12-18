@@ -147,24 +147,14 @@ class Home {
                                     $db->dbDisconnect();
                                     header("Location: /pickrole", TRUE, 302);
                                 } else {
-                                    //Agregar permisos
+                                    //Se obtienen y agregan los permisos
                                     $idRol=$arr[0]['idrol'];
-
-                                    $sql= "select p.idpermiso,p.nombre as nombre ";
-                                    $sql.="from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso ";
-                                    $sql.="where pr.idRol=".$idRol;	
-                                    $sql.=" union all ";
-                                    $sql.="select p.idpermiso,pe.nombre as nombre from personapermiso p ";
-                                    $sql.="inner join permiso pe on p.idpermiso=pe.idpermiso ";
-                                    $sql.="where p.idpersona= ".$ses->getIdPersona();
-                                    $sql.=" order by nombre ";
-
-                                    $result = $db->getSQLArray($sql);
-                                    $ses->clearPermisos(); //Cambio 65 Leo 20171025
+                                    $result=$this->usuario->obtenerPermisos($idRol, $ses->getIdPersona());
+                                    $ses->clearPermisos();
                                     foreach ($result as $permiso) {
-                                                    $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
+                                        $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
                                     }
-
+                                    
                                     //Cambio 20180222
                                     $sql="select parametro,valor from configuracion order by orden";
                                     $result = $db->getSQLArray($sql);
@@ -173,6 +163,7 @@ class Home {
                                                 $ses->agregarConfiguracion($conf["parametro"],$conf["valor"]);
                                     }
                                     //Fin Cambio 20180222
+                                    
                                     $db->dbDisconnect();
                                     //Fin Cambio Leo 20170706 Leo
                                     header("Location: /", TRUE, 302);
@@ -195,20 +186,10 @@ class Home {
                             $db->dbDisconnect();
                             header("Location: /pickrole", TRUE, 302);
                         } else {
-                            //Agregar permisos
+                            //Se obtienen y agregan los permisos
                             $idRol=$arr[0]['idrol'];
-
-                            $sql= "select p.idpermiso,p.nombre as nombre ";
-                            $sql.="from permisorol pr inner join permiso p on pr.idpermiso=p.idpermiso ";
-                            $sql.="where pr.idRol=".$idRol;	
-                            $sql.=" union all ";
-                            $sql.="select p.idpermiso,pe.nombre as nombre from personapermiso p ";
-                            $sql.="inner join permiso pe on p.idpermiso=pe.idpermiso ";
-                            $sql.="where p.idpersona= ".$ses->getIdPersona();
-                            $sql.=" order by nombre ";
-
-                            $result = $db->getSQLArray($sql);
-                            $ses->clearPermisos(); //Cambio 65 Leo 20171025
+                            $result=$this->usuario->obtenerPermisos($idRol, $ses->getIdPersona());
+                            $ses->clearPermisos();
                             foreach ($result as $permiso) {
                                 $ses->agregarPermiso($permiso["idpermiso"],$permiso["nombre"]);
                             }

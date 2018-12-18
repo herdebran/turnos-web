@@ -79,7 +79,7 @@ class Usuario extends Controller {
         }
         
         if (!isset($usuario))
-            $usuario = $this->crearUsuarioEnBlanco ();
+            $usuario = $this->crearUsuarioEnBlanco();
 
         if (!isset($persona))
             $persona=$this->persona->getPersonaById($idpersona);
@@ -99,7 +99,6 @@ class Usuario extends Controller {
      */
     public function guardarusuario() {
         $ses = & $this->POROTO->Session;
-        $lib = & $this->POROTO->Libraries['siteLibrary'];
 
         if (!$ses->tienePermiso('', 'Guardar usuario')) {
             $ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
@@ -145,6 +144,24 @@ class Usuario extends Controller {
 
     }
     
+    /**
+     * Dado un idpersona, busca el usuario asociado y llama a la vista crear-usuario.php
+     * con la intención de poder poner un nuevo pass para dicho usuario.
+     * @param type $idpersona
+     */
+    public function resetearpass($idpersona) {
+        $ses = & $this->POROTO->Session;
+        if (!$ses->tienePermiso('', 'Resetear password')) {
+            $ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
+            header("Location: /gestion-personas", TRUE, 302);
+            exit();
+        }
+        
+        
+        
+        //TODO: la logica
+ 
+    } 
 }
 
 ?>
