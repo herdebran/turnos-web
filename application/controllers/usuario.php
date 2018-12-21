@@ -156,10 +156,31 @@ class Usuario extends Controller {
             header("Location: /gestion-personas", TRUE, 302);
             exit();
         }
+
+        $validationErrors = array();
+        $param=array();
+
+        if (isset($_SESSION['persona_form_error']) && $_SESSION['persona_form_error']) {
+            $params['validationErrors'] = $_SESSION['persona_form_alerts'];
+            $usuario=$_SESSION['usuario_con_error'];
+            unset($_SESSION['persona_form_alerts']);
+            unset($_SESSION['persona_form_error']);
+            unset($_SESSION['usuario_con_error']);
+        } else {
+            $params['validationErrors'] = [];
+        }
+        if (!isset($usuario))
+            $usuario=$this->usuario->getUsuarioByIdPersona($idpersona);
+
+        if (!isset($persona))
+            $persona=$this->persona->getPersonaById($idpersona);
         
-        
-        
-        //TODO: la logica
+        $params['usuario'] = $usuario;
+        $params['persona'] = $persona;
+        $params['pageTitle'] = "Cambiar password";
+        $params['btnText'] = "Cambiar";
+
+        $this->render("crear-usuario.php", $params);
  
     } 
 }

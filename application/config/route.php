@@ -54,3 +54,4 @@ $route['ajaxmunicipios/(:any)'] = 'fideicomiso/ajaxmunicipios/$1';
 $route['ajaxlocalidades/(:any)'] = 'fideicomiso/ajaxlocalidades/$1';
 $route['crear-usuario/(:any)'] = 'usuario/crearusuario/$1';
 $route['guardar-usuario'] = 'usuario/guardarusuario';
+$route['resetear-pass/(:any)'] = 'usuario/resetearpass/$1';

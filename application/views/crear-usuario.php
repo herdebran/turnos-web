@@ -1,5 +1,11 @@
 <?php
-$usuario = isset($params['usuario']) ? $params['usuario'] : null;
+if (isset($params['usuario'])){
+    $usuario =  $params['usuario'];
+    $estiloCampoNombre=($usuario['usuario']!= null)?"disabled":"";
+} else {
+    $usuario =  null;   
+    $estiloCampoNombre='';
+}
 
 ?>
 <style>
@@ -16,6 +22,8 @@ $usuario = isset($params['usuario']) ? $params['usuario'] : null;
         <?php endforeach; ?>
     </div>
 <?php } ?>
+
+<body onLoad = "enfocar()">
 
 <form class="form-horizontal" action="/guardar-usuario" method="POST" accept-charset="utf-8">  
     <h3><?php echo $params['pageTitle']; ?></h3>
@@ -39,7 +47,7 @@ $usuario = isset($params['usuario']) ? $params['usuario'] : null;
                             <div class="form-group col-md-6 col-lg-6 required <?php if (array_key_exists('usuario', $params['validationErrors'])) echo "has-error"; ?>">
                                 <label for="usuario" class="col-md-4 control-label">Usuario</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="" maxlength="45" value="<?php echo $params['usuario']['usuario']; ?>" autocomplete="off" />
+                                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="" maxlength="45" value="<?php echo $params['usuario']['usuario']; ?>" <?php echo $estiloCampoNombre; ?> autocomplete="off" />
                                 </div>
                             </div>
                         </div>
@@ -74,3 +82,11 @@ $usuario = isset($params['usuario']) ? $params['usuario'] : null;
         </div>
     </div>
 </form>
+</body>
+
+<script>
+function enfocar()
+{
+    password.focus();
+}
+</script>
