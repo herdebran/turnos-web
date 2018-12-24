@@ -117,7 +117,9 @@ class Usuario extends Controller {
             // Alta nuevo usuario
             try {
                 $this->app->beginTransaction('usuario/guardarusuario');
-                $idusuario = $this->usuario->persistirUsuario($usuario);
+                // Agregar IF para saber si esta solo editando pass
+                    $idusuario = $this->usuario->persistirUsuario($usuario);
+                // ---
                 $this->app->commitTransaction('usuario/guardarusuario');
                 $bOk = array("ok" => true, "message" => "El usuario se generó satisfactoriamente.", "idusuario" => $idusuario);
             } catch (PDOException $e) {

@@ -87,6 +87,10 @@ if (isset($params['usuario'])){
 <script>
 function enfocar()
 {
-    password.focus();
+    if ($("#usuario").val() == '') {
+        usuario.focus();
+    } else {
+        password.focus();
+    }
 }
 </script>
