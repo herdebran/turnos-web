@@ -13,11 +13,14 @@ class Usuario extends Controller {
         $this->persona = new ModeloPersona($this->POROTO);
     }
 
-    private function cargarDatosAltaUsuario() {
+    private function cargarDatosAltaUsuario($edicion) {
         $usuario['idpersona'] = filter_input(INPUT_POST, 'idpersona');
-        $usuario['usuario'] = filter_input(INPUT_POST, 'usuario');
-        $usuario['password'] = md5(filter_input(INPUT_POST, 'password'));
-        $usuario['repitepassword'] = md5(filter_input(INPUT_POST, 'repitepassword'));
+        $usuario['password'] = filter_input(INPUT_POST, 'password');
+        $usuario['repitepassword'] = filter_input(INPUT_POST, 'repitepassword');
+        if (! $edicion)
+            $usuario['usuario'] = filter_input(INPUT_POST, 'usuario');
+        else
+            $usuario['usuario']=$edicion['usuario']!=null?$edicion['usuario']:'';
 
         return $usuario;
     }
@@ -105,8 +108,9 @@ class Usuario extends Controller {
             header("Location: /gestion-personas", TRUE, 302);
             exit();
         }
-
-        $usuario = $this->cargarDatosAltaUsuario();
+        $idpersona= filter_input(INPUT_POST, 'idpersona');
+        $edicion=$this->usuario->getUsuarioByIdPersona($idpersona);
+        $usuario = $this->cargarDatosAltaUsuario($edicion);
 
         $params = array();
         $params['validationErrors'] = [];
@@ -118,13 +122,21 @@ class Usuario extends Controller {
             try {
                 $this->app->beginTransaction('usuario/guardarusuario');
                 // Agregar IF para saber si esta solo editando pass
+                if ($edicion){
+                    //Solo se actualiza la pass
+                    $this->usuario->resetearPassUsuario($usuario['usuario'], md5($usuario['password']));
+                    $mensajeSatisfactorio="Se ha modificado la contraseña satisfactoriamente.";
+                } else {
+                    //Se inserta un nuevo usuario para la persona
                     $idusuario = $this->usuario->persistirUsuario($usuario);
+                    $mensajeSatisfactorio="Se ha creado el usuario satisfactoriamente.";
+                }
                 // ---
                 $this->app->commitTransaction('usuario/guardarusuario');
-                $bOk = array("ok" => true, "message" => "El usuario se generó satisfactoriamente.", "idusuario" => $idusuario);
+                $bOk = array("ok" => true, "message" => $mensajeSatisfactorio);
             } catch (PDOException $e) {
                 $this->app->rollbackTransaction('usuario/guardarusuario');
-                $bOk = array("ok" => false, "message" => "Se produjo un error al persistir..", "idusuario" => $idusuario);
+                $bOk = array("ok" => false, "message" => "Se produjo un error al persistir.");
             }
 
             

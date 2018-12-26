@@ -22,7 +22,7 @@ class ModeloUsuario {
         $params = array(
             ":idpersona" => $valores["idpersona"],
             ":usuario" => $valores["usuario"],
-            ":password" => $valores["password"],
+            ":password" => md5($valores["password"]),
             ":usucrea" => $this->_session->getUsuario(),
             ":fechacrea" => date("Y-m-d H:i:s")
         );
