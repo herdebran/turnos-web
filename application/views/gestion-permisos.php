@@ -186,7 +186,6 @@
                                 width: "5%",
                                 render: function (data, type, row, meta) {
                                     return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["idpersona"] + '" title="Detalle de usuario"><i class="glyphicon glyphicon-cog" ></i></a>\n\
-                                            <button type="button" class="btn btn-default btn-xs resetpass" data-persona="' + row["idpersona"] + '" title="Resetear Clave"><i class="glyphicon glyphicon-erase" ></i></button>\n\
                                             <a type="button" class="btn btn-default btn-xs" href="resetear-pass/' + row["idpersona"] + '" title="Resetear Clave"><i class="glyphicon glyphicon-erase" ></i></a>';
                                 }
                             }
