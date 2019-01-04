@@ -143,7 +143,7 @@ class Usuario extends Controller {
             if ($bOk["ok"] === false) {
                 $ses->setMessage("Se produjo un error al persistir." . $bOk["message"], SessionMessageType::TransactionError);
             } else {
-                $ses->setMessage("Usuario generado con éxito", SessionMessageType::Success);
+                $ses->setMessage($mensajeSatisfactorio, SessionMessageType::Success);
             }
             header("Location: /gestion-personas", TRUE, 302);
             exit();
