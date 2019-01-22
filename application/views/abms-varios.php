@@ -1,8 +1,7 @@
 <form class="form-horizontal" action="#" id="form-busqueda"
       method="POST" accept-charset="utf-8">
     <fieldset>
-        <h3>ABMs Varios</h3>
-        <p>Desde esta pantalla se podran agregar, quitar o eliminar datos utiles usados en el sistema</p>
+        <h3><?php echo $params['pageTitle'];?></h3>
 
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
             <label><input type="radio" id="especialidades" name="opttipoabm" checked>Especialidades</label>
@@ -90,7 +89,7 @@
                         serverSide: false,
                         scrollX: true,
                         ajax: {
-                            url: "/permisos/personasConFiltro",
+                            url: "/abmsvarios/listarEspecialidades",
                             method: "post",
                             data: function (data) {
                                 data = {};
@@ -101,38 +100,23 @@
                             },
                             complete: function () {
                                 $('#loadingModal').hide();
-                                $("#btnBuscar").attr("disabled", false);
                             }
                         },
                         columns: [
-                            {data: 'tipodocynro',
-                                width: "10%"
-                            },
-                            {data: 'apeynom'},
-                            {data: 'estado'},
-                            {data: 'rol'},
+                            {data: 'id'},
+                            {data: 'descripcion'},
+                            {data: 'activo'},
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["idpersona"] + '" title="Detalle de usuario"><i class="glyphicon glyphicon-cog" ></i></a>\n\
-                                            <a type="button" class="btn btn-default btn-xs" href="resetear-pass/' + row["idpersona"] + '" title="Resetear Clave"><i class="glyphicon glyphicon-erase" ></i></a>';
+                                    return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["idpersona"] + '" title="borrar"><i class="glyphicon glyphicon-cog" ></i></a>';
                                 }
                             }
                         ]
                     });
         }
 
-        $("#table-resultados tbody").on("click", "button", function (event) {
-            var btn = $(event.target);
-            if (btn.is("span")) {
-                btn = $(btn.parent());
-            }
-            var ok = confirm("¿Está seguro que desea resetear la contraseña del usuario? id:" + btn.data("persona"));
-            if (ok) {
-                var idpersona = btn.data("persona");
-                $(location).attr('href', '/permisos/resetpass/' + idpersona);
-            }
-        });
+
         // Form functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         /**
          * 
@@ -164,13 +148,7 @@
          * Limpia el formulario de busqueda
          */
         function limpiarForm() {
-            $("#nombre").val("");
-            $("#apellido").val("");
-            $("#tipdoc").val(0);
-            $("#nrodoc").val("");
-            $("#rol").val(0);
-            $("#permiso").val(0);
-            sessionStorage.removeItem('busqueda');
+            $("#nueva").val("");
         }
         /**
          * 
