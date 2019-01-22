@@ -14,62 +14,40 @@
             <label><input type="radio" id="obrassociales" name="opttipoabm">Obras Sociales</label>
         </div>
 
-        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label for="nombre" class="col-xs-4 control-label">Nombre</label>
-            <div class="col-xs-8">
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="" maxlength="45" value="" autocomplete="off">
+        
+        <fieldset>
+            <h3>Resultados</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-striped table-hover table-condensed" id="table-resultados" width="100%">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Descripcion</th>
+                                <th>Activo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-
+        </fieldset>        
+        
+        
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label for="tipdoc" class="col-xs-4 control-label">Tipo Doc.</label>
+            <label for="nueva" class="col-xs-4 control-label">Nueva</label>
             <div class="col-xs-8">
-                <select class="form-control" id="tipdoc" name="tipdoc">
-                    <option value="0">SELECCIONAR</option>
-                    <?php foreach ($params['viewDataTipoDocumento'] as $tipdoc) { ?>
-                        <option value="<?php echo $tipdoc['id']; ?>"><?php echo $tipdoc['descripcion']; ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label for="nrodoc" class="col-xs-4 control-label">Nro.Doc.</label>
-            <div class="col-xs-8">
-                <input type="number" min="1" max="99999999" class="form-control" id="nrodoc" name="nrodoc" placeholder="" value="">
+                <input type="text" class="form-control" id="nueva" name="nueva" placeholder="" maxlength="45" value="" autocomplete="off">
+                <button id="btnAgregar" type="button" class="btn btn-primary">Agregar</button>
             </div>
         </div>
 
         
-        <div class="form-group">
-            <div class="col-xs-12">
-                <button id="btnBuscar" type="button" class="btn btn-primary">Buscar</button>
-                <a href="/crear-persona" type="button" class="btn btn-success">Crear Persona</a>
-                <a href="/permisos/gestionroles" type="button" class="btn btn-success">Gestion Roles</a>
-            </div>
-        </div>
     </fieldset>
 </form>
-<fieldset>
-    <h3>Resultados</h3>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed" id="table-resultados" width="100%">
-                <thead>
-                    <tr>
-                        <th>Documento</th>
-                        <th>Nombre y Apellido</th>
-                        <th>Habilitado</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</fieldset>
+
 
 <div class="modal" id="loadingModal">
     <div class="modal-dialog" role="document">
@@ -88,30 +66,7 @@
 
 <script>
     $().ready(function () {
-
-        /**
-         * Verifica si existe una busqueda previa y si la hay la carga en el formulario.
-         */
-        if (sessionStorage.getItem('busqueda') !== null) {
-            let oldSearch = JSON.parse(sessionStorage.getItem('busqueda'));
-            $("#nombre").val(oldSearch.nombre);
-            $("#apellido").val(oldSearch.apellido);
-            $("#tipdoc").val(oldSearch.tipdoc);
-            $("#nrodoc").val(oldSearch.nrodoc);
-            $("#rol").val(oldSearch.rol);
-            $("#permiso").val(oldSearch.permiso);
-        }
-
-        // DATATABLE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        /**
-         * 
-         * @type Boolean
-         * Determina si hay que "crear" el objeto datatables.
-         * Caso contrario, hay que recargar el llamado ajax.
-         */
         var firstLoad = true;
-
         /**
          * 
          * @type DataTables
@@ -139,13 +94,9 @@
                             method: "post",
                             data: function (data) {
                                 data = {};
-                                data.nombre = $("#nombre").val();
-                                data.apellido = $("#apellido").val();
-                                data.tipdoc = $("#tipdoc").val();
-                                data.nrodoc = $("#nrodoc").val();
-                                data.rol = $("#rol").val();
-                                data.permiso = $("#permiso").val();
-                                sessionStorage.setItem("busqueda", JSON.stringify(data));
+                                data.id = $("#id").val();
+                                data.descripcion = $("#descripcion").val();
+                                data.activo = $("#activo").val();
                                 return {'filtros': data};
                             },
                             complete: function () {
