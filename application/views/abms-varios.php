@@ -1,39 +1,26 @@
+<fieldset>
+    <h3><?php echo $params['pageTitle'];?></h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table table-striped table-hover table-condensed" id="table-resultados" width="100%">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Descripcion</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</fieldset>        
+
 <form class="form-horizontal" action="#" id="form-busqueda"
       method="POST" accept-charset="utf-8">
     <fieldset>
-        <h3><?php echo $params['pageTitle'];?></h3>
-
-        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label><input type="radio" id="especialidades" name="opttipoabm" checked>Especialidades</label>
-        </div>
-        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label><input type="radio" id="estudios" name="opttipoabm">Estudios</label>
-        </div>
-        <div class="form-group col-xs-12 col-sm-6 col-lg-4">
-            <label><input type="radio" id="obrassociales" name="opttipoabm">Obras Sociales</label>
-        </div>
-
-        
-        <fieldset>
-            <h3>Resultados</h3>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <table class="table table-striped table-hover table-condensed" id="table-resultados" width="100%">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Descripcion</th>
-                                <th>Activo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </fieldset>        
-        
         
         <div class="form-group col-xs-12 col-sm-6 col-lg-4">
             <label for="nueva" class="col-xs-4 control-label">Nueva</label>
@@ -72,7 +59,7 @@
          * Variable global donde se aloja el objeto datatable.
          */
         var table;
-
+        cargarDataTable();
         /**
          * 
          * @returns void

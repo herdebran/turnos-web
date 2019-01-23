@@ -24,10 +24,9 @@ class Abmsvarios extends Controller {
             exit();
         }
 
-// ---------------------- Logica del metodo ----------------------------
         $params = array();
         $params['pageTitle'] = "Lista de especialidades";
-// ---------------------- Fin logica del metodo ------------------------
+        $params['tipo'] = "esp";
         $this->render("/abms-varios.php", $params);
     }
 }
