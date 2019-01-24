@@ -145,5 +145,17 @@
         $("#btnReset").click(function () {
             limpiarForm();
         });
+        
+        $("#btnAgregar").click(function () {
+            var ok = confirm("¿Está seguro?");
+            if (ok) {
+                var nueva = $("#nueva").val();
+            
+            
+            var row = '<?php echo $params['tipo'];?>'
+            if (row=='esp')    
+                $(location).attr('href', '/abmsvarios/altanuevaespecialidad/' + nueva );
+            }
+        });
     });
 </script>

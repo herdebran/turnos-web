@@ -17,7 +17,7 @@ class Abmsvarios extends Controller {
         echo json_encode($json);
     }
     
-    function abrirlistaespecialidades() {
+    public function abrirlistaespecialidades() {
         if (!$this->ses->tienePermiso('', 'Lista de especialidades - Acceso desde Menu')) {
             $this->ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
             header("Location: /", TRUE, 302);
@@ -28,5 +28,23 @@ class Abmsvarios extends Controller {
         $params['pageTitle'] = "Lista de especialidades";
         $params['tipo'] = "esp";
         $this->render("/abms-varios.php", $params);
+    }
+    
+    public function altanuevaespecialidad($nueva) {
+        if (!$this->ses->tienePermiso('', 'Lista de especialidades - Alta')) {
+            $this->ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
+            header("Location: /", TRUE, 302);
+            exit();
+        }
+
+
+        //CONTINUA DE ACA PARA ABAJO.
+
+//        if ($this->permisos->setpersonapermiso($idpersona, $idpermiso, $estado)) {
+//            $this->ses->setMessage("El permiso se cambio exitosamente.", SessionMessageType::Success);
+//        } else {
+//            $this->ses->setMessage("Error al cambiar el permiso.", SessionMessageType::TransactionError);
+//        }
+        header("Location: /permisos/detalle/$idpersona", TRUE, 302);
     }
 }
