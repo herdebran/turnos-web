@@ -37,14 +37,13 @@ class Abmsvarios extends Controller {
             exit();
         }
 
-
-        //CONTINUA DE ACA PARA ABAJO.
-
-//        if ($this->permisos->setpersonapermiso($idpersona, $idpermiso, $estado)) {
-//            $this->ses->setMessage("El permiso se cambio exitosamente.", SessionMessageType::Success);
-//        } else {
-//            $this->ses->setMessage("Error al cambiar el permiso.", SessionMessageType::TransactionError);
-//        }
-        header("Location: /permisos/detalle/$idpersona", TRUE, 302);
+        $valores = array();
+        $valores["descripcion"]=$nueva;
+        if ($this->especialidad->nuevaEspecialidad($valores)) {
+            $this->ses->setMessage("Se insertó la especialidad exitosamente.", SessionMessageType::Success);
+        } else {
+            $this->ses->setMessage("Error al insertar especialidad.", SessionMessageType::TransactionError);
+        }
+        header("Location: /abm-especialidades", TRUE, 302);
     }
 }
