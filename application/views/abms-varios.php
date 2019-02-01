@@ -96,14 +96,25 @@
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["idpersona"] + '" title="borrar"><i class="glyphicon glyphicon-cog" ></i></a>';
+                                    /**return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["id"] + '" title="desactivar"><i class="glyphicon glyphicon-remove" ></i></a>';**/
+                                    return '<button type="button" class="btn btn-default btn-xs desactivar" data-desactivar="' + row["id"] + '" title="Desactivar"><i class="glyphicon glyphicon-remove" ></i></button>';
                                 }
                             }
                         ]
                     });
         }
 
-
+        $("#table-resultados tbody").on("click", "button", function (event) {
+            var btn = $(event.target);
+            if (btn.is("span")) {
+                btn = $(btn.parent());
+            }
+            var ok = confirm("¿Está seguro?");
+            if (ok) {
+                var id = btn.data("desactivar");
+                /**$(location).attr('href', '/permisos/resetpass/' + idpersona); */
+            }
+        });
         // Form functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         /**
          * 
