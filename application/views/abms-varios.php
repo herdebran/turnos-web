@@ -112,7 +112,10 @@
             var ok = confirm("¿Está seguro?");
             if (ok) {
                 var id = btn.data("desactivar");
-                /**$(location).attr('href', '/permisos/resetpass/' + idpersona); */
+                alert("id:"+id);
+                /*var row = '<?php echo $params['tipo'];?>'
+                if (row=='esp')    
+                    $(location).attr('href', '/abmsvarios/desactivarespecialidad/' + id);*/
             }
         });
         // Form functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

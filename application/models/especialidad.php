@@ -39,6 +39,23 @@ class ModeloEspecialidad {
         
         $this->PDO->execute($sql, "especialidad/getAllEspecialidades", $params);
         $result = $this->PDO->fetchAll(PDO::FETCH_ASSOC);
-        return $result;    }
+        return $result;    
+    }
 
+    /**
+     * Dado un id se desactiva la especialidad en cuestion
+     * @param type $id
+     * @return type
+     */
+    public function desactivarEspecialidad($id) {
+        //Agrego la persona
+        $sql = "update especialidad set activo=0
+                    where id=:id";
+        $params = array(
+            ":id" => $id
+        );
+
+        $this->PDO->execute($sql, 'especialidad/desactivarEspecialidad', $params);
+        return array("ok" => true, "message" => "Especialidad desactivada ok.");        
+    }
 }
