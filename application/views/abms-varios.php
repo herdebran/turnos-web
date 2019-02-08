@@ -96,28 +96,30 @@
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    /**return '<a type="button" class="btn btn-default btn-xs" href="permisos/detalle/' + row["id"] + '" title="desactivar"><i class="glyphicon glyphicon-remove" ></i></a>';**/
-                                    return '<button type="button" class="btn btn-default btn-xs desactivar" data-desactivar="' + row["id"] + '" title="Desactivar"><i class="glyphicon glyphicon-remove" ></i></button>';
+                                    return '<a type="button" class="btn btn-default btn-xs desactivar" id="2" data-idrow=' + row["id"] + ' title="Desactivar"><i class="glyphicon glyphicon-remove" ></i></a>';
                                 }
                             }
                         ]
                     });
         }
+       $("#table-resultados tbody").on("click", "a", function (event) {
 
-        $("#table-resultados tbody").on("click", "button", function (event) {
             var btn = $(event.target);
             if (btn.is("span")) {
                 btn = $(btn.parent());
             }
             var ok = confirm("¿Está seguro?");
             if (ok) {
-                var id = btn.data("desactivar");
-                alert("id:"+id);
-                /*var row = '<?php echo $params['tipo'];?>'
+                
+            
+                var id = btn.id;
+                alert(id);    
+                /*var row = '<?php echo $params['tipo'];?>';
                 if (row=='esp')    
                     $(location).attr('href', '/abmsvarios/desactivarespecialidad/' + id);*/
             }
         });
+
         // Form functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         /**
          * 
@@ -171,5 +173,6 @@
                 $(location).attr('href', '/abmsvarios/altanuevaespecialidad/' + nueva );
             }
         });
+        
     });
 </script>
