@@ -96,7 +96,15 @@
                             {data: 'acciones',
                                 width: "5%",
                                 render: function (data, type, row, meta) {
-                                    return '<a type="button" class="btn btn-default btn-xs desactivar" id="2" data-idrow=' + row["id"] + ' title="Desactivar"><i class="glyphicon glyphicon-remove" ></i></a>';
+
+        
+                                    if (row["activo"] == '1') {
+                                        return '<a type="button" class="btn btn-default btn-xs" id="' + row["id"] + '" title="Desactivar"><i class="glyphicon glyphicon-remove" ></i></a>';
+                                    } else {
+                                        return '<a type="button" class="btn btn-default btn-xs" id="' + row["id"] + '" title="Activar"><i class="glyphicon glyphicon-ok-circle" ></i></a>';
+                                    }
+        
+        
                                 }
                             }
                         ]
@@ -110,13 +118,20 @@
             }
             var ok = confirm("¿Está seguro?");
             if (ok) {
+                var id=$(this).attr('id');
+                var title=$(this).attr('title').toLowerCase();
+                var row = '<?php echo $params['tipo'];?>';
+                var value;
+                if(title=="desactivar"){
+                    value="0";
+                } else {
+                    value="1";
+                }
                 
-            
-                var id = btn.id;
-                alert(id);    
-                /*var row = '<?php echo $params['tipo'];?>';
+                
                 if (row=='esp')    
-                    $(location).attr('href', '/abmsvarios/desactivarespecialidad/' + id);*/
+                    $(location).attr('href', '/abmsvarios/desactivarespecialidad/' + id + '/' + value);
+                
             }
         });
 

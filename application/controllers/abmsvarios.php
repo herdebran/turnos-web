@@ -46,18 +46,18 @@ class Abmsvarios extends Controller {
         }
         header("Location: /abm-especialidades", TRUE, 302);
     }
-    public function desactivarespecialidad($id) {
+    public function desactivarespecialidad($id, $valor) {
         if (!$this->ses->tienePermiso('', 'Lista de especialidades - Desactivar')) {
             $this->ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
             header("Location: /", TRUE, 302);
             exit();
         }
 
-        $resultado=$this->especialidad->desactivarEspecialidad($id);
+        $resultado=$this->especialidad->setearActivoEspecialidad($id,$valor);
         if ($resultado["ok"]) {
             $this->ses->setMessage($resultado["message"] , SessionMessageType::Success);
         } else {
-            $this->ses->setMessage("Error al desactivar especialidad.", SessionMessageType::TransactionError);
+            $this->ses->setMessage("Error al cambiar valor en especialidad.", SessionMessageType::TransactionError);
         }
         header("Location: /abm-especialidades", TRUE, 302);
     }

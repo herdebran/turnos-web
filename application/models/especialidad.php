@@ -47,10 +47,13 @@ class ModeloEspecialidad {
      * @param type $id
      * @return type
      */
-    public function desactivarEspecialidad($id) {
-        //Agrego la persona
-        $sql = "update especialidad set activo=0
-                    where id=:id";
+    public function setearActivoEspecialidad($id,$valor) {
+        //Agrego la persona (el if es feo pero no funciona de otra manera)
+        if ($valor==1)
+            $sql = "update especialidad set activo=1  where id=:id";
+        else if ($valor==0)
+            $sql = "update especialidad set activo=0  where id=:id";
+        
         $params = array(
             ":id" => $id
         );
