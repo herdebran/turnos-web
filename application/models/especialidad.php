@@ -61,4 +61,15 @@ class ModeloEspecialidad {
         $this->PDO->execute($sql, 'especialidad/desactivarEspecialidad', $params);
         return array("ok" => true, "message" => "Especialidad desactivada ok.");        
     }
+    
+    public function existeEspecialidadByNombre($nombre) {
+        $sql = "SELECT * 
+                FROM especialidad 
+                WHERE descripcion=:nombre ";
+        $params = array(":nombre" => $nombre);
+
+        $this->PDO->execute($sql, "especialidad/existeEspecialidadByNombre", $params);
+        $result = $this->PDO->fetch(PDO::FETCH_ASSOC);
+        return $result==null?false:true;    
+    }
 }

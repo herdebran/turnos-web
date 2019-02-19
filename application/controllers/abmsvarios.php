@@ -36,15 +36,25 @@ class Abmsvarios extends Controller {
             header("Location: /", TRUE, 302);
             exit();
         }
-
-        $valores = array();
-        $valores["descripcion"]=$nueva;
-        if ($this->especialidad->nuevaEspecialidad($valores)) {
-            $this->ses->setMessage("Se insertó la especialidad exitosamente.", SessionMessageType::Success);
-        } else {
-            $this->ses->setMessage("Error al insertar especialidad.", SessionMessageType::TransactionError);
+        if ($this->especialidad->existeEspecialidadByNombre($nueva)) {
+            $existe=true;
+        }else {
+            $existe=false;
         }
-        header("Location: /abm-especialidades", TRUE, 302);
+        
+        if (!$existe){
+            $valores = array();
+            $valores["descripcion"]=$nueva;
+            if ($this->especialidad->nuevaEspecialidad($valores)) {
+                $this->ses->setMessage("Se insertó la especialidad exitosamente.", SessionMessageType::Success);
+            } else {
+                $this->ses->setMessage("Error al insertar especialidad.", SessionMessageType::TransactionError);
+            }
+            header("Location: /abm-especialidades", TRUE, 302);
+        } else {
+            $this->ses->setMessage("Ya existe el elemento que desea agregar.", SessionMessageType::TransactionError);
+            header("Location: /abm-especialidades", TRUE, 302);
+        }
     }
     public function desactivarespecialidad($id, $valor) {
         if (!$this->ses->tienePermiso('', 'Lista de especialidades - Desactivar')) {
