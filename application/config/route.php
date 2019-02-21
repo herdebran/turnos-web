@@ -56,3 +56,4 @@ $route['crear-usuario/(:any)'] = 'usuario/crearusuario/$1';
 $route['guardar-usuario'] = 'usuario/guardarusuario';
 $route['resetear-pass/(:any)'] = 'usuario/resetearpass/$1';
 $route['abm-especialidades'] = 'abmsvarios/abrirlistaespecialidades';
+$route['abm-obrassociales'] = 'abmsvarios/abrirlistaobrassociales';

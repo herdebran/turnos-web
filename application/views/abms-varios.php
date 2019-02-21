@@ -66,6 +66,14 @@
          * Inicializa el objeto Datatable y lo asigna en "table"
          */
         function cargarDataTable() {
+            var tipo;
+            var row = '<?php echo $params['tipo'];?>';
+            
+            if (row=='esp')
+                tipo='Especialidades';
+            else if (row=='os')
+                tipo='ObrasSociales';
+            
             table = $('#table-resultados')
                     .removeAttr('width')
                     .DataTable({
@@ -76,7 +84,7 @@
                         serverSide: false,
                         scrollX: true,
                         ajax: {
-                            url: "/abmsvarios/listarEspecialidades",
+                            url: "/abmsvarios/listar"+tipo,
                             method: "post",
                             data: function (data) {
                                 data = {};

@@ -3,11 +3,14 @@
 class Abmsvarios extends Controller {
 
     private $especialidad;
+    private $obrasocial;
 
     public function __construct($poroto) {
         parent::__construct($poroto);
         include($this->POROTO->ModelPath . '/especialidad.php');
+        include($this->POROTO->ModelPath . '/obrasocial.php');
         $this->especialidad = new ModeloEspecialidad($this->POROTO);
+        $this->obrasocial = new ModeloObraSocial($this->POROTO);
     }
 
     public function listarEspecialidades() {
@@ -70,5 +73,25 @@ class Abmsvarios extends Controller {
             $this->ses->setMessage("Error al cambiar valor en especialidad.", SessionMessageType::TransactionError);
         }
         header("Location: /abm-especialidades", TRUE, 302);
+    }
+    
+    public function abrirlistaobrassociales() {
+        if (!$this->ses->tienePermiso('', 'Lista de obras sociales - Acceso desde Menu')) {
+            $this->ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
+            header("Location: /", TRUE, 302);
+            exit();
+        }
+
+        $params = array();
+        $params['pageTitle'] = "Lista de Obras Sociales";
+        $params['tipo'] = "os";
+        $this->render("/abms-varios.php", $params);
+    }    
+    
+      public function listarObrasSociales() {
+        $ooss = $this->obrasocial->getAllObrasSociales();
+        $json = array("data" => $ooss);
+
+        echo json_encode($json);
     }
 }
