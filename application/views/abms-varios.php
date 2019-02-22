@@ -194,6 +194,8 @@
             var row = '<?php echo $params['tipo'];?>'
             if (row=='esp')    
                 $(location).attr('href', '/abmsvarios/altanuevaespecialidad/' + nueva );
+            else if (row=='os')    
+                $(location).attr('href', '/abmsvarios/altanuevaobrasocial/' + nueva );
             }
         });
         

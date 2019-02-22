@@ -2,6 +2,7 @@
 
 class Abmsvarios extends Controller {
 
+    private $db;
     private $especialidad;
     private $obrasocial;
 
@@ -9,6 +10,7 @@ class Abmsvarios extends Controller {
         parent::__construct($poroto);
         include($this->POROTO->ModelPath . '/especialidad.php');
         include($this->POROTO->ModelPath . '/obrasocial.php');
+        $db =  $this->POROTO->DB;
         $this->especialidad = new ModeloEspecialidad($this->POROTO);
         $this->obrasocial = new ModeloObraSocial($this->POROTO);
     }
@@ -39,6 +41,7 @@ class Abmsvarios extends Controller {
             header("Location: /", TRUE, 302);
             exit();
         }
+        $nueva=$db->dbEscape(trim($nueva));
         if ($this->especialidad->existeEspecialidadByNombre($nueva)) {
             $existe=true;
         }else {
@@ -93,5 +96,33 @@ class Abmsvarios extends Controller {
         $json = array("data" => $ooss);
 
         echo json_encode($json);
+    }
+    
+    public function altanuevaobrasocial($nueva) {
+        if (!$this->ses->tienePermiso('', 'Lista de obras sociales - Alta')) {
+            $this->ses->setMessage("Acceso denegado. Contactese con el administrador.", SessionMessageType::TransactionError);
+            header("Location: /", TRUE, 302);
+            exit();
+        }
+        $nueva=$db->dbEscape(trim($nueva)); //sanitizar datoooo! pasar a upper.
+        if ($this->obrasocial->existeObraSocialByNombre($nueva)) {
+            $existe=true;
+        }else {
+            $existe=false;
+        }
+        
+        if (!$existe){
+            $valores = array();
+            $valores["descripcion"]=$nueva;
+            if ($this->obrasocial->nuevaObraSocial($valores)) {
+                $this->ses->setMessage("Se insertó la obra social exitosamente.", SessionMessageType::Success);
+            } else {
+                $this->ses->setMessage("Error al insertar obra social.", SessionMessageType::TransactionError);
+            }
+            header("Location: /abm-obrassociales", TRUE, 302);
+        } else {
+            $this->ses->setMessage("Ya existe la obra social que desea agregar.", SessionMessageType::TransactionError);
+            header("Location: /abm-obrassociales", TRUE, 302);
+        }
     }
 }
