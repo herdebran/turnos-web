@@ -104,7 +104,8 @@ class Abmsvarios extends Controller {
             header("Location: /", TRUE, 302);
             exit();
         }
-        $nueva=$db->dbEscape(trim($nueva)); //sanitizar datoooo! pasar a upper.
+        $nueva=trim(strtoupper(urldecode(filter_var($nueva)))); //sanitizar datoooo! pasar a upper.
+        
         if ($this->obrasocial->existeObraSocialByNombre($nueva)) {
             $existe=true;
         }else {
